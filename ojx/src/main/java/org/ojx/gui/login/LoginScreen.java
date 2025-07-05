@@ -2,6 +2,8 @@ package org.ojx.gui.login;
 
 import javax.swing.*;
 
+import org.ojx.gui.HomeScreen;
+import org.ojx.model.User;
 import org.ojx.repository.UserRepository;
 import org.ojx.service.UserService;
 import org.ojx.service.impl.UserServiceImpl;
@@ -10,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class LoginScreen extends JFrame {
     private JTextField usernameField;
@@ -116,7 +119,6 @@ public class LoginScreen extends JFrame {
                 try {
                     handleLogin();
                 } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -164,7 +166,16 @@ public class LoginScreen extends JFrame {
             passwordField.requestFocus();
             return;
         }
+        Optional<User> userOpt = userService.getByUserName(username);
         showSuccessMessage("Login successful as " + (type == 2 ? "an admin" : "a user") + "! Welcome " + username);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                HomeScreen mainScreen = new HomeScreen(userOpt.get().getUserId());
+                mainScreen.setVisible(true);
+                dispose();
+            }
+        });
     }
 
     private void handleRegister() {

@@ -18,7 +18,7 @@ create table if not exists user (
 insert into user (user_id, user_type, user_name, password, email, name, country, rating) values
 (1, 'admin', 'admin', 'a', 'admin@ojx.com', 'Quynh', 'Vietnam', 1400),
 (2, 'user', 'john_doe', 'password123', 'john@example.com', 'John Doe', 'USA', 1200),
-(3, 'user', 'alice_smith', 'pass456', 'alice@example.com', 'Alice Smith', 'Canada', 1350),
+(3, 'problem_setter', 'alice_smith', 'pass456', 'alice@example.com', 'Alice Smith', 'Canada', 1350),
 (4, 'user', 'bob_wilson', 'mypass789', 'bob@example.com', 'Bob Wilson', 'UK', 1100),
 (5, 'user', 'charlie_brown', 'charlie123', 'charlie@example.com', 'Charlie Brown', 'Australia', 950),
 (6, 'user', 'diana_prince', 'diana456', 'diana@example.com', 'Diana Prince', 'Germany', 1280),

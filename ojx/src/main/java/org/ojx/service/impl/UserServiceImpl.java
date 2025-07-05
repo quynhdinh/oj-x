@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.isAuthenticated(userName, password);
     }
 
+    @Override
+    public int update(User user) {
+        return userRepository.updateUser(user);
+    }
+
 }

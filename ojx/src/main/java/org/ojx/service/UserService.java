@@ -11,6 +11,7 @@ public interface UserService {
     Optional<User> getByUserName(String userName) throws SQLException;
     List<User> getAll();
     int save(User user);
+    int update(User user);
     int isAuthenticated(String userName, String password) throws SQLException;
     // boolean isAdmin(String userName) throws SQLException;
     Optional<User> getById(int userId);

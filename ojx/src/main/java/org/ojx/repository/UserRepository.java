@@ -131,4 +131,24 @@ public class UserRepository {
         }
         return 0;
     }
+
+    public int updateUser(User user) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "UPDATE " + TABLE_NAME
+                    + " SET user_type = ?, user_name = ?, password = ?, email = ?, name = ?, country = ? WHERE user_id = ?";
+            try (var preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setString(1, user.getUserType());
+                preparedStatement.setString(2, user.getUserName());
+                preparedStatement.setString(3, user.getPassword());
+                preparedStatement.setString(4, user.getEmail());
+                preparedStatement.setString(5, user.getName());
+                preparedStatement.setString(6, user.getCountry());
+                preparedStatement.setInt(7, user.getUserId());
+                return preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            log.warning("SQLException thrown:\n" + e.getMessage());
+        }
+        return -1;
+    }
 }
