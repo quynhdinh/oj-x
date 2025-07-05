@@ -49,7 +49,20 @@ public class SignupScreen extends JDialog {
         emailField = new JTextField(25);
         nameField = new JTextField(25);
         countryField = new JTextField(25);
-        
+        // Set initial values for testing
+        usernameField.setText("john");
+        passwordField.setText("password123");
+        confirmPasswordField.setText("password123");
+        emailField.setText("john@johnnydang.com");
+        nameField.setText("Johnny Dang");
+        countryField.setText("USA");
+        // Set initial values for testing
+        usernameField.setToolTipText("Enter a unique username (max 50 characters)");
+        passwordField.setToolTipText("Enter your password");
+        confirmPasswordField.setToolTipText("Confirm your password");
+        emailField.setToolTipText("Enter your email address");
+        nameField.setToolTipText("Enter your full name");
+        countryField.setToolTipText("Enter your country");
         // Create buttons
         signUpButton = new JButton("Sign Up");
         cancelButton = new JButton("Cancel");
@@ -86,17 +99,16 @@ public class SignupScreen extends JDialog {
         
         // Title
         JLabel titleLabel = new JLabel("Create New Account");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 20, 30, 20);
+        gbc.insets = new Insets(20, 10, 30, 10);
         mainPanel.add(titleLabel, gbc);
         
         // Reset grid width for form fields
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 20, 10, 10);
         
         // Username field
         addFormField(mainPanel, gbc, "Username:", usernameField, 1);
@@ -124,7 +136,7 @@ public class SignupScreen extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 20, 20, 20);
+        gbc.insets = new Insets(20, 10, 20, 10);
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(buttonPanel, gbc);
         
@@ -136,7 +148,7 @@ public class SignupScreen extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(10, 20, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 5);
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 14));
         panel.add(label, gbc);
@@ -144,7 +156,7 @@ public class SignupScreen extends JDialog {
         // Field
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 10, 10, 20);
+        gbc.insets = new Insets(10, 5, 10, 10);
         panel.add(field, gbc);
     }
     
@@ -170,7 +182,7 @@ public class SignupScreen extends JDialog {
     private void setupFrame() {
         setTitle("OJX Registration");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(550, 550);
+        setSize(500, 550);
         setLocationRelativeTo(null); // Center the window
         setResizable(false);
     }
@@ -187,14 +199,17 @@ public class SignupScreen extends JDialog {
         String email = emailField.getText().trim();
         String name = nameField.getText().trim();
         String country = countryField.getText().trim();
-        
+
         User user = new User.Builder()
                 .userName(username)
+                .userType("user")
                 .password(password)
                 .email(email)
                 .name(name)
                 .country(country)
+                .rating(1400)
                 .build();
+        System.out.println(user);
         userService.save(user);
         showSuccessMessage("Account created successfully!\nUsername: " + username + "\nEmail: " + email);
         

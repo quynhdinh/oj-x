@@ -60,17 +60,17 @@ public class LoginScreen extends JFrame {
 
         // Title
         JLabel titleLabel = new JLabel("OJX - Online Judge System");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 20, 30, 20);
+        gbc.insets = new Insets(20, 10, 30, 10);
         mainPanel.add(titleLabel, gbc);
 
         // Username label and field
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 20, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 5);
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -80,21 +80,21 @@ public class LoginScreen extends JFrame {
 
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 10, 10, 20);
+        gbc.insets = new Insets(10, 5, 10, 10);
         mainPanel.add(usernameField, gbc);
 
         // Password label and field
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(10, 20, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 5);
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         mainPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 10, 10, 20);
+        gbc.insets = new Insets(10, 5, 10, 10);
         mainPanel.add(passwordField, gbc);
 
         // Button panel
@@ -105,7 +105,7 @@ public class LoginScreen extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 20, 20, 20);
+        gbc.insets = new Insets(20, 10, 20, 10);
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(buttonPanel, gbc);
 
@@ -138,7 +138,7 @@ public class LoginScreen extends JFrame {
     private void setupFrame() {
         setTitle("OJX Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 350);
+        setSize(420, 350);
         setLocationRelativeTo(null); // Center the window
         setResizable(false);
     }

@@ -1,9 +1,9 @@
-drop table if exists submission;
-drop table if exists leaderboard;
-drop table if exists user;
-drop table if exists contest;
-drop table if exists test_case;
-drop table if exists problem;
+-- drop table if exists submission;
+-- drop table if exists leaderboard;
+-- drop table if exists user;
+-- drop table if exists contest;
+-- drop table if exists test_case;
+-- drop table if exists problem;
 create table if not exists user (
     user_id int primary key auto_increment,
     user_type varchar(20) not null,
@@ -24,13 +24,7 @@ insert into user (user_id, user_type, user_name, password, email, name, country,
 (6, 'user', 'diana_prince', 'diana456', 'diana@example.com', 'Diana Prince', 'Germany', 1280),
 (7, 'user', 'eve_adams', 'eve789', 'eve@example.com', 'Eve Adams', 'France', 1150),
 (8, 'user', 'frank_castle', 'frank123', 'frank@example.com', 'Frank Castle', 'Japan', 1320)
-on duplicate key update
-    user_type = values(user_type),
-    password = values(password),
-    email = values(email),
-    name = values(name),
-    country = values(country),
-    rating = values(rating);
+on duplicate key update user_id = values(user_id);
 
 create table if not exists problem (
     problem_id int primary key auto_increment,

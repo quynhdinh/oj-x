@@ -69,7 +69,7 @@ public class UserRepository {
     public int createUser(User user) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME
-                    + " (user_type, username, password, email, name, country, rating) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    + " (user_type, user_name, password, email, name, country, rating) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (var preparedStatement = conn.prepareStatement(sql)) {
                 preparedStatement.setString(1, user.getUserType());
                 preparedStatement.setString(2, user.getUserName());

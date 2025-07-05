@@ -66,7 +66,7 @@ public class HomeScreen extends JFrame {
         
         // Title
         JLabel titleLabel = new JLabel("OJX - Online Judge System");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx = 0;
         gbc.gridy = 0;
