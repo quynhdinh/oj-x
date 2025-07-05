@@ -36,3 +36,5 @@ build/
 
 ### Mac OS ###
 DS_Store
+ojx/.idea/
+ojx/src/main/resources/.env
