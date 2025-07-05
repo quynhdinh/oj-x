@@ -118,3 +118,15 @@ create table if not exists contest (
     started_at long not null,
     problem_ids text not null
 );
+
+create table if not exists submission (
+    submission_id int primary key auto_increment,
+    problem_id int not null,
+    language varchar(20) not null,
+    user_id int not null,
+    source_code text not null,
+    judge_status varchar(20) not null,
+    created_at long not null,
+    foreign key (user_id) references user(user_id),
+    foreign key (problem_id) references problem(problem_id)
+);

@@ -183,7 +183,10 @@ public class CreateProblemScreen extends JFrame {
             problemIdField.setEditable(false);
             problemIdField.setText("Auto-generated");
         }
-        
+        // some data for testing
+        problemNameField.setText("Add two numbers");
+        problemStatementArea.setText("Given two integers, return their sum.");
+        tagsField.setText("math, addition");
         // Add initial test case
         addTestCase();
     }
@@ -343,7 +346,7 @@ public class CreateProblemScreen extends JFrame {
     }
 
     private void setupFrame() {
-        setTitle("OJX - Problem Management");
+        setTitle("OJX - Setting Problem");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1000, 850);
         setLocationRelativeTo(null); // Center the window

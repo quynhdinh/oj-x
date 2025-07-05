@@ -5,6 +5,7 @@ import javax.swing.*;
 import org.ojx.gui.login.LoginScreen;
 import org.ojx.gui.problem.ProblemsetScreen;
 import org.ojx.gui.profile.UserProfileScreen;
+import org.ojx.gui.submission.SubmissionScreen;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -181,8 +182,12 @@ public class HomeScreen extends JFrame {
     }
     
     private void handleSubmission() {
-        // TODO: Implement submission functionality
-        showInfoMessage("Submission feature - Coming soon!");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SubmissionScreen(userId).setVisible(true);
+            }
+        });
     }
     
     private void handleProfile() {
