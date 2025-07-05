@@ -12,4 +12,6 @@ public interface ProblemService {
     List<ProblemResDTO> getAllProblems();
     List<ProblemResDTO> getProblemsByDifficulty(String difficulty);
     int create(CreateProblemDTO problem);
+    List<ProblemResDTO> getProblemsByName(String name);
+    List<ProblemResDTO> getProblemsByTags(String tags);
 }

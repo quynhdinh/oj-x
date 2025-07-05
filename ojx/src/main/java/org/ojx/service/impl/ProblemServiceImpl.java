@@ -15,7 +15,7 @@ public class ProblemServiceImpl implements ProblemService {
     private ProblemRepository problemRepository;
     private TestCaseRepository testCaseRepository;
 
-    ProblemServiceImpl(ProblemRepository problemRepository, TestCaseRepository testCaseRepository) {
+    public ProblemServiceImpl(ProblemRepository problemRepository, TestCaseRepository testCaseRepository) {
         this.problemRepository = problemRepository;
         this.testCaseRepository = testCaseRepository;
     }
@@ -46,6 +46,16 @@ public class ProblemServiceImpl implements ProblemService {
             }
         }
         return 1;
+    }
+
+    @Override
+    public List<ProblemResDTO> getProblemsByName(String name) {
+        return problemRepository.getProblemsByName(name);
+    }
+
+    @Override
+    public List<ProblemResDTO> getProblemsByTags(String tags) {
+        return problemRepository.getProblemsByTags(tags);
     }
 
 }

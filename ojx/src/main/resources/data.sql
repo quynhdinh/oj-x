@@ -41,12 +41,16 @@ insert into problem (problem_id, problem_name, problem_statement, difficulty, ta
 (5, 'Palindrome Number', 'Given an integer x, return true if x is palindrome integer. An integer is a palindrome when it reads the same backward as forward.', 'Easy', 'Math'),
 (6, 'Reverse Integer', 'Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range, then return 0.', 'Medium', 'Math'),
 (7, 'String to Integer (atoi)', 'Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer (similar to C/C++''s atoi function).', 'Medium', 'String'),
-(8, 'Container With Most Water', 'You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container that contains the most water.', 'Medium', 'Array,Two Pointers,Greedy')
-on duplicate key update
-    problem_name = values(problem_name),
-    problem_statement = values(problem_statement),
-    difficulty = values(difficulty),
-    tags = values(tags);
+(8, 'Container With Most Water', 'You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are at (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water.', 'Medium', 'Array,Two Pointers'),
+(9, 'Valid Parentheses', 'Given a string s containing just the characters ''('', ''{'', ''['', '')'', ''}'', and '']'', determine if the input string is valid. An input string is valid if the brackets are closed in the correct order.', 'Easy', 'String,Stack'),
+(10, 'Merge Two Sorted Lists', 'You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.', 'Easy', 'Linked List,Recursion'),
+(11, 'Maximum Subarray', 'Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.', 'Easy', 'Array,Divide and Conquer,Dynamic Programming'),
+(12, 'Climbing Stairs', 'You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?', 'Easy', 'Dynamic Programming,Math'),
+(13, 'Best Time to Buy and Sell Stock', 'You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve from this transaction. You may complete at most one transaction (i.e., buy one and sell one share of the stock).', 'Easy', 'Array,Dynamic Programming'),
+(14, 'Symmetric Tree', 'Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).', 'Easy', 'Tree,Breadth-First Search,Depth-First Search'),
+(15, 'Binary Tree Level Order Traversal', 'Given the root of a binary tree, return the level order traversal of its nodes'' values. (i.e., from left to right, level by level).', 'Medium', 'Tree,Breadth-First Search'),
+(16, 'Path Sum II', 'Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where each path''s sum equals targetSum.', 'Medium', 'Tree,Breadth-First Search,Depth-First Search')
+on duplicate key update problem_id = values(problem_id);
 
 create table if not exists test_case (
     test_case_id int primary key auto_increment,

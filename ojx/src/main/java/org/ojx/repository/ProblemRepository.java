@@ -89,13 +89,15 @@ public class ProblemRepository {
     public List<ProblemResDTO> getAllProblems() {
         List<ProblemResDTO> problems = new ArrayList<>();
         try (Connection conn = ConnectionManager.getConnection()) {
-            String sql = "SELECT problem_id, problem_name FROM " + TABLE_NAME;
+            String sql = "SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME;
             try (PreparedStatement pstmt = conn.prepareStatement(sql);
                     ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     int problemId = rs.getInt("problem_id");
                     String problemName = rs.getString("problem_name");
-                    problems.add(new ProblemResDTO(problemId, problemName));
+                    String tags = rs.getString("tags");
+                    String difficulty = rs.getString("difficulty");
+                    problems.add(new ProblemResDTO(problemId, problemName, tags, difficulty));
                 }
                 return problems;
             }
@@ -108,14 +110,15 @@ public class ProblemRepository {
     public List<ProblemResDTO> getProblemsByDifficulty(String difficulty) {
         List<ProblemResDTO> problems = new ArrayList<>();
         try (Connection conn = ConnectionManager.getConnection()) {
-            String sql = "SELECT problem_id, problem_name FROM " + TABLE_NAME + " WHERE difficulty = ?";
+            String sql = "SELECT problem_id, problem_name, tags FROM " + TABLE_NAME + " WHERE difficulty = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, difficulty);
                 try (ResultSet rs = pstmt.executeQuery()) {
                     while (rs.next()) {
                         int problemId = rs.getInt("problem_id");
                         String problemName = rs.getString("problem_name");
-                        problems.add(new ProblemResDTO(problemId, problemName));
+                        String tags = rs.getString("tags");
+                        problems.add(new ProblemResDTO(problemId, problemName, tags, difficulty));
                     }
                     return problems;
                 }
@@ -152,5 +155,66 @@ public class ProblemRepository {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    public List<ProblemResDTO> getProblemsByName(String name) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME
+                    + " WHERE LOWER(problem_name) LIKE LOWER(?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, "%" + name + "%");
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    List<ProblemResDTO> problems = new ArrayList<>();
+                    while (rs.next()) {
+                        int problemId = rs.getInt("problem_id");
+                        String problemName = rs.getString("problem_name");
+                        String tags = rs.getString("tags");
+                        String difficulty = rs.getString("difficulty");
+                        problems.add(new ProblemResDTO(problemId, problemName, tags, difficulty));
+                    }
+                    return problems;
+                }
+            }
+        } catch (SQLException e) {
+            log.severe("Error fetching problems by name: " + e.getMessage());
+        }
+        return List.of();
+    }
+
+    public List<ProblemResDTO> getProblemsByTags(String tags) {
+        String[] splits = tags.split(",");
+        try (Connection conn = ConnectionManager.getConnection()) {
+            StringBuilder sql = new StringBuilder("SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME);
+            if (splits.length > 0) {
+                sql.append(" WHERE ");
+                for (int i = 0; i < splits.length; i++) {
+                    sql.append("LOWER(tags) LIKE LOWER(?)");
+                    if (i < splits.length - 1) {
+                        sql.append(" OR ");
+                    }
+                }
+            }
+            try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+                for (int i = 0; i < splits.length; i++) {
+                    pstmt.setString(i + 1, "%" + splits[i].trim() + "%");
+                }
+                String string = pstmt.toString();
+                System.out.println(string);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    List<ProblemResDTO> problems = new ArrayList<>();
+                    while (rs.next()) {
+                        int problemId = rs.getInt("problem_id");
+                        String problemName = rs.getString("problem_name");
+                        String tagsStr = rs.getString("tags");
+                        String difficulty = rs.getString("difficulty");
+                        problems.add(new ProblemResDTO(problemId, problemName, tagsStr, difficulty));
+                    }
+                    return problems;
+                }
+            }
+        } catch (SQLException e) {
+            log.severe("Error fetching problems by tags: " + e.getMessage());
+        }
+        return List.of();
     }
 }

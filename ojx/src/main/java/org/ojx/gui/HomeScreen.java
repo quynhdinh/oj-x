@@ -3,6 +3,7 @@ package org.ojx.gui;
 import javax.swing.*;
 
 import org.ojx.gui.login.LoginScreen;
+import org.ojx.gui.problem.ProblemsetScreen;
 import org.ojx.gui.profile.UserProfileScreen;
 
 import java.awt.*;
@@ -166,8 +167,12 @@ public class HomeScreen extends JFrame {
     }
     
     private void handleProblemset() {
-        // TODO: Implement problemset functionality
-        showInfoMessage("Problemset feature - Coming soon!");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ProblemsetScreen(userId).setVisible(true);
+            }
+        });
     }
     
     private void handleContest() {

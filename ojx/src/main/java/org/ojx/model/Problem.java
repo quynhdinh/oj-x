@@ -18,4 +18,45 @@ public class Problem {
         this.tags = tags;
     }
 
+    // Getters
+    public int getProblemId() {
+        return problemId;
+    }
+
+    public String getProblemName() {
+        return problemName;
+    }
+
+    public String getProblemStatement() {
+        return problemStatement;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    // Setters
+    public void setProblemId(int problemId) {
+        this.problemId = problemId;
+    }
+
+    public void setProblemName(String problemName) {
+        this.problemName = problemName;
+    }
+
+    public void setProblemStatement(String problemStatement) {
+        this.problemStatement = problemStatement;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }
