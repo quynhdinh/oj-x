@@ -8,5 +8,6 @@ public record CreateProblemDTO(String problemName,
                             String problemStatement,
                             String difficulty,
                             String tags,
-                            List<TestCase> testCases) {
+                            List<TestCase> testCases,
+                            boolean isVisible) {
 }

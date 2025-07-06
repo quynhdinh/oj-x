@@ -41,8 +41,8 @@ public class LoginScreen extends JFrame {
 
         // Set preferred sizes - making text fields larger
         Dimension fieldSize = new Dimension(250, 35);
-        usernameField.setText("admin");
-        passwordField.setText("a");
+        usernameField.setText("john_doe");
+        passwordField.setText("password123");
         usernameField.setPreferredSize(fieldSize);
         passwordField.setPreferredSize(fieldSize);
 

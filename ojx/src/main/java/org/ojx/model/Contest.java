@@ -1,16 +1,54 @@
 package org.ojx.model;
 
-import java.util.List;
-
 public class Contest {
     private int contestId;
-    private int duration;
+    private String contestName;
     private int length;
-    private List<Integer> problemIds;
-    public Contest(int contestId, int duration, int length, List<Integer> problemIds) {
+    private long startedAt;
+    private String problemIds;
+    private String points;
+
+    public Contest(int contestId, String contestName, int length, long startedAt, String problemIds, String points) {
         this.contestId = contestId;
-        this.duration = duration;
+        this.contestName = contestName;
         this.length = length;
+        this.startedAt = startedAt;
         this.problemIds = problemIds;
+        this.points = points;
+    }
+
+    public int getContestId() {
+        return contestId;
+    }
+
+    public String getContestName() {
+        return contestName;
+    }
+
+    public long getStartedAt() {
+        return startedAt;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public String getProblemIds() {
+        return problemIds;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+    @Override
+    public String toString() {
+        return "Contest{" +
+                "contestId=" + contestId +
+                ", contestName='" + contestName + '\'' +
+                ", length=" + length +
+                ", startedAt=" + startedAt +
+                ", problemIds='" + problemIds + '\'' +
+                ", points='" + points + '\'' +
+                '}';
     }
 }

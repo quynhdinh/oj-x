@@ -132,11 +132,12 @@ public class ProblemRepository {
     public int create(CreateProblemDTO problem) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME
-                    + " (problem_name, problem_statement, difficulty) VALUES (?, ?, ?, ?)";
+                    + " (problem_name, problem_statement, difficulty, isVisible) VALUES (?, ?, ?, ?)";
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, problem.problemName());
                 pstmt.setString(2, problem.problemStatement());
                 pstmt.setString(3, problem.difficulty());
+                pstmt.setBoolean(4, problem.isVisible());
 
                 int affectedRows = pstmt.executeUpdate();
                 if (affectedRows == 0) {
@@ -160,7 +161,7 @@ public class ProblemRepository {
     public List<ProblemResDTO> getProblemsByName(String name) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME
-                    + " WHERE LOWER(problem_name) LIKE LOWER(?)";
+                    + " WHERE isVisible = 1 AND LOWER(problem_name) LIKE LOWER(?)";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, "%" + name + "%");
                 try (ResultSet rs = pstmt.executeQuery()) {
@@ -184,9 +185,9 @@ public class ProblemRepository {
     public List<ProblemResDTO> getProblemsByTags(String tags) {
         String[] splits = tags.split(",");
         try (Connection conn = ConnectionManager.getConnection()) {
-            StringBuilder sql = new StringBuilder("SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME);
+            StringBuilder sql = new StringBuilder("SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME + " WHERE isVisible = 1");
             if (splits.length > 0) {
-                sql.append(" WHERE ");
+                sql.append(" AND ");
                 for (int i = 0; i < splits.length; i++) {
                     sql.append("LOWER(tags) LIKE LOWER(?)");
                     if (i < splits.length - 1) {
@@ -216,5 +217,18 @@ public class ProblemRepository {
             log.severe("Error fetching problems by tags: " + e.getMessage());
         }
         return List.of();
+    }
+
+    public int setVisible(String problems, boolean isVisible) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "UPDATE " + TABLE_NAME + " SET isVisible = ? WHERE problem_id IN (" + problems + ")";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, isVisible ? 1 : 0);
+                return pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            log.severe("Error setting problem visibility: " + e.getMessage());
+        }
+        return 0;
     }
 }

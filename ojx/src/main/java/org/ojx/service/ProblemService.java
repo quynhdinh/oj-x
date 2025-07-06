@@ -10,6 +10,7 @@ import org.ojx.model.Problem;
 public interface ProblemService {
     Optional<Problem> getProblemById(int problemId);
     List<ProblemResDTO> getAllProblems();
+    int setVisible(String problems, boolean isVisible);
     List<ProblemResDTO> getProblemsByDifficulty(String difficulty);
     int create(CreateProblemDTO problem);
     List<ProblemResDTO> getProblemsByName(String name);

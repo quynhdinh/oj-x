@@ -331,23 +331,14 @@ public class ProblemsetScreen extends JFrame {
         
         // Get problem details
         Object problemId = tableModel.getValueAt(modelRow, 0);
-        Object problemName = tableModel.getValueAt(modelRow, 1);
-        Object tags = tableModel.getValueAt(modelRow, 2);
-        Object difficulty = tableModel.getValueAt(modelRow, 3);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ViewProblemScreen viewScreen = new ViewProblemScreen((Integer) problemId, userId);
+                viewScreen.setVisible(true);
+            }
+        });
         
-        // For now, show problem details in a dialog
-        // You can later replace this with a dedicated problem view screen
-        String details = String.format(
-            "Problem ID: %s\nProblem Name: %s\nTags: %s\nDifficulty: %s",
-            problemId, problemName, tags, difficulty
-        );
-        
-        JOptionPane.showMessageDialog(
-            this,
-            details,
-            "Problem Details",
-            JOptionPane.INFORMATION_MESSAGE
-        );
     }
 
     private void handleBack() {

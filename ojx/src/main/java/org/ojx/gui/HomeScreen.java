@@ -2,6 +2,7 @@ package org.ojx.gui;
 
 import javax.swing.*;
 
+import org.ojx.gui.contest.ContestScreen;
 import org.ojx.gui.login.LoginScreen;
 import org.ojx.gui.problem.ProblemsetScreen;
 import org.ojx.gui.profile.UserProfileScreen;
@@ -177,8 +178,12 @@ public class HomeScreen extends JFrame {
     }
     
     private void handleContest() {
-        // TODO: Implement contest functionality
-        showInfoMessage("Contest feature - Coming soon!");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ContestScreen().setVisible(true);
+            }
+        });
     }
     
     private void handleSubmission() {

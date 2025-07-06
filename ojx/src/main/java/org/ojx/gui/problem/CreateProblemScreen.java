@@ -22,6 +22,7 @@ public class CreateProblemScreen extends JFrame {
     private JTextArea problemStatementArea;
     private JComboBox<String> difficultyComboBox;
     private JTextField tagsField;
+    private JCheckBox contestCheckBox;
     private JPanel testCasesPanel;
     private JScrollPane testCasesScrollPane;
     private JButton addTestCaseButton;
@@ -135,7 +136,7 @@ public class CreateProblemScreen extends JFrame {
         // Create text fields with larger column counts
         problemIdField = new JTextField(20);
         problemNameField = new JTextField(20);
-        problemStatementArea = new JTextArea(10, 40);
+        problemStatementArea = new JTextArea(5, 40);
         problemStatementArea.setLineWrap(true);
         problemStatementArea.setWrapStyleWord(true);
         
@@ -145,6 +146,10 @@ public class CreateProblemScreen extends JFrame {
         
         // Create tags field with larger column count
         tagsField = new JTextField(20);
+        
+        // Create contest checkbox
+        contestCheckBox = new JCheckBox();
+        contestCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Initialize test cases panel and list
         testCasePanels = new ArrayList<>();
@@ -177,6 +182,7 @@ public class CreateProblemScreen extends JFrame {
         problemStatementArea.setToolTipText("Enter the problem description and requirements");
         difficultyComboBox.setToolTipText("Select problem difficulty");
         tagsField.setToolTipText("Enter comma-separated tags (e.g., array, sorting, dynamic-programming)");
+        contestCheckBox.setToolTipText("Check if this problem will be used in an upcoming contest");
 
         // Initially disable problem ID field for new problems
         if (currentProblem == null) {
@@ -233,7 +239,7 @@ public class CreateProblemScreen extends JFrame {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         JScrollPane scrollPane = new JScrollPane(problemStatementArea);
-        scrollPane.setPreferredSize(new Dimension(400, 200));
+        scrollPane.setPreferredSize(new Dimension(400, 100));
         mainPanel.add(scrollPane, gbc);
 
         // Reset fill and weight for other components
@@ -247,9 +253,33 @@ public class CreateProblemScreen extends JFrame {
         // Tags field
         addFormField(mainPanel, gbc, "Tags:", tagsField, 5);
 
-        // Test Cases section
+        // Contest checkbox (aligned with other form fields)
         gbc.gridx = 0;
         gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(10, 10, 10, 5);
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        JLabel contestLabel = new JLabel("Visible");
+        contestLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        mainPanel.add(contestLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 5, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        mainPanel.add(contestCheckBox, gbc);
+
+        // Reset for next component
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        gbc.gridwidth = 1;
+
+        // Test Cases section
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.insets = new Insets(20, 10, 10, 5);
         JLabel testCasesLabel = new JLabel("Test Cases:");
@@ -265,7 +295,7 @@ public class CreateProblemScreen extends JFrame {
 
         // Test cases scroll pane
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -285,7 +315,7 @@ public class CreateProblemScreen extends JFrame {
         buttonPanel.add(backButton);
 
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 10, 20, 10);
         gbc.anchor = GridBagConstraints.CENTER;
@@ -364,6 +394,7 @@ public class CreateProblemScreen extends JFrame {
             String problemStatement = problemStatementArea.getText().trim();
             String difficulty = (String) difficultyComboBox.getSelectedItem();
             String tagsString = tagsField.getText().trim();
+            boolean isForContest = contestCheckBox.isSelected();
 
             if (isEditMode && currentProblem != null) {
                 // For edit mode, we'll show a message that editing isn't implemented yet
@@ -391,7 +422,8 @@ public class CreateProblemScreen extends JFrame {
                     problemStatement, 
                     difficulty, 
                     tagsString, 
-                    testCases
+                    testCases,
+                    isForContest
                 );
                 
                 int result = problemService.create(problemDTO);
@@ -485,6 +517,7 @@ public class CreateProblemScreen extends JFrame {
         problemStatementArea.setText("");
         difficultyComboBox.setSelectedIndex(0);
         tagsField.setText("");
+        contestCheckBox.setSelected(false);
         clearTestCases();
         problemNameField.requestFocus();
     }
@@ -508,6 +541,7 @@ public class CreateProblemScreen extends JFrame {
         problemStatementArea.setEditable(editable);
         difficultyComboBox.setEnabled(editable);
         tagsField.setEditable(editable);
+        contestCheckBox.setEnabled(editable);
         setTestCasesEditable(editable);
     }
 
@@ -679,6 +713,10 @@ public class CreateProblemScreen extends JFrame {
             testCases.add(testCase);
         }
         return testCases;
+    }
+
+    public boolean isForContest() {
+        return contestCheckBox.isSelected();
     }
 
     // Main method for testing the ProblemScreen independently

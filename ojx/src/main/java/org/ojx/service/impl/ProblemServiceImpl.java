@@ -58,4 +58,8 @@ public class ProblemServiceImpl implements ProblemService {
         return problemRepository.getProblemsByTags(tags);
     }
 
+    @Override
+    public int setVisible(String problems, boolean isVisible) {
+        return problemRepository.setVisible(problems, isVisible);
+    }
 }

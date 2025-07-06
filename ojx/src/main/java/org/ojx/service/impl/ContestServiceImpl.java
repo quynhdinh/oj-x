@@ -1,8 +1,10 @@
 package org.ojx.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.ojx.dto.ContestDTO;
 import org.ojx.model.Contest;
 import org.ojx.repository.ContestRepository;
 import org.ojx.service.ContestService;
@@ -13,11 +15,11 @@ public class ContestServiceImpl implements ContestService {
         this.contestRepository = contestRepository;
     }
     @Override
-    public int create(int duration, long startedAt, String problemIds) {
-        return contestRepository.create(duration, startedAt, problemIds);
+    public int create(ContestDTO contest) {
+        return contestRepository.create(contest);
     }
     @Override
-    public List<Contest> getAll() {
+    public List<Contest> getAll() throws SQLException {
         return contestRepository.getAll();
     }
     @Override
