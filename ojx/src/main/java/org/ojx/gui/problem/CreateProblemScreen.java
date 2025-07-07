@@ -560,10 +560,10 @@ public class CreateProblemScreen extends JFrame {
         testCasesPanel.revalidate();
         testCasesPanel.repaint();
         
-        // Scroll to show the new test case
+        // Scroll to the bottom to show the newly added test case
         SwingUtilities.invokeLater(() -> {
             JScrollBar vertical = testCasesScrollPane.getVerticalScrollBar();
-            vertical.setValue(vertical.getMaximum());
+            vertical.setValue(vertical.getMinimum());
         });
     }
     

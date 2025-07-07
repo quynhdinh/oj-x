@@ -23,6 +23,7 @@ public class ContestScreen extends JFrame {
     private JLabel totalContestsLabel;
 
     private ContestService contestService;
+    private List<Contest> contests; // Store loaded contests
 
     // Table column names
     private final String[] columnNames = {"Contest ID", "Contest Name", "Duration (minutes)", "Problems Count", "Start Time", "Status"};
@@ -159,7 +160,7 @@ public class ContestScreen extends JFrame {
             tableModel.setRowCount(0);
             
             // Load contests from service
-            List<Contest> contests = contestService.getAll();
+            contests = contestService.getAll(); // Store in class field
             
             if (contests != null && !contests.isEmpty()) {
                 // Note: Since Contest model doesn't have start_time field, 
@@ -170,11 +171,12 @@ public class ContestScreen extends JFrame {
                     Contest contest = contests.get(i);
                     
                     // Mock start time (in real implementation, this would come from contest object)
-                    Date mockStartTime = new Date(System.currentTimeMillis() - (i * 24 * 60 * 60 * 1000L));
-                    String formattedStartTime = dateFormat.format(mockStartTime);
-                    
+                    Date start_Date = new Date(contest.getStartedAt() * 1000L);
+                    String formattedStartTime = dateFormat.format(start_Date);
+
                     // Determine status based on mock data
-                    String status = i % 3 == 0 ? "Upcoming" : (i % 3 == 1 ? "Ongoing" : "Finished");
+                    String status = start_Date.before(new Date()) ? "Ongoing" :
+                                    (start_Date.after(new Date()) ? "Upcoming" : "Finished");
                     
                     Object[] rowData = {
                         getContestId(contest),
@@ -244,21 +246,21 @@ public class ContestScreen extends JFrame {
             return;
         }
         
-        // Get contest ID from the table
-        Object contestIdObj = tableModel.getValueAt(selectedRow, 0);
-        
-        if (contestIdObj instanceof Integer) {
-            int contestId = (Integer) contestIdObj;
-            
-            // Show contest details (placeholder - implement ContestDetailScreen)
-            showInfoMessage("Viewing contest details for Contest ID: " + contestId + 
-                          "\n\nNote: Contest detail screen will be implemented next.");
-            
-            // In a real implementation, you would open a ContestDetailScreen:
-            // new ContestDetailScreen(contestId).setVisible(true);
-            
-        } else {
+        // Validate that we have contests loaded and the row is valid
+        if (contests == null || selectedRow >= contests.size()) {
             showErrorMessage("Invalid contest selection.");
+            return;
+        }
+        
+        try {
+            // Get the contest object from the stored list
+            Contest selectedContest = contests.get(selectedRow);
+            
+            // Open the ContestDetailScreen as a modal dialog
+            ContestDetailScreen.showContestDetail(this, selectedContest);
+            
+        } catch (Exception e) {
+            showErrorMessage("Error opening contest details: " + e.getMessage());
         }
     }
 
@@ -268,10 +270,6 @@ public class ContestScreen extends JFrame {
 
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void showInfoMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Getters for external access
