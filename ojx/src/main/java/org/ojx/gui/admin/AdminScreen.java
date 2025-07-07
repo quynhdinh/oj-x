@@ -55,6 +55,20 @@ public class AdminScreen extends JFrame {
         backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
         backButton.setBorderPainted(false);
+        backButton.setOpaque(true);
+        
+        // Add hover effect for back button
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backButton.setBackground(new Color(90, 98, 104));
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backButton.setBackground(new Color(108, 117, 125));
+            }
+        });
         
         // Add tooltips
         userManagementButton.setToolTipText("Manage users, roles, and permissions");
