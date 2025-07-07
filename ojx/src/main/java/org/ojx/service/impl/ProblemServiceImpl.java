@@ -38,14 +38,11 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public int create(CreateProblemDTO problem) {
         int problem_id = problemRepository.create(problem);
-        for (var testCase : problem.testCases()) {
-            boolean ok = testCaseRepository.createTestCase(problem_id, testCase.getInput(), testCase.getOutput(),
-                    testCase.is_sample());
-            if (ok) {
-                return -1;
-            }
+        if (problem_id > 0) {
+            testCaseRepository.createTestCaseInBatch(problem_id, problem.testCases());
+            return problem_id;
         }
-        return 1;
+        return -1;
     }
 
     @Override

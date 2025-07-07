@@ -394,7 +394,7 @@ public class CreateProblemScreen extends JFrame {
             String problemStatement = problemStatementArea.getText().trim();
             String difficulty = (String) difficultyComboBox.getSelectedItem();
             String tagsString = tagsField.getText().trim();
-            boolean isForContest = contestCheckBox.isSelected();
+            boolean isForContest = !contestCheckBox.isSelected();
 
             if (isEditMode && currentProblem != null) {
                 // For edit mode, we'll show a message that editing isn't implemented yet
