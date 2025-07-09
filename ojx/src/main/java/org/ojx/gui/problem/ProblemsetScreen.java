@@ -4,10 +4,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import org.ojx.dto.ProblemResDTO;
+import org.ojx.model.User;
 import org.ojx.repository.ProblemRepository;
 import org.ojx.repository.TestCaseRepository;
+import org.ojx.repository.UserRepository;
 import org.ojx.service.ProblemService;
 import org.ojx.service.impl.ProblemServiceImpl;
+import org.ojx.service.impl.UserServiceImpl;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,14 +29,14 @@ public class ProblemsetScreen extends JFrame {
     private JButton viewProblemButton;
     private JButton backButton;
     private TableRowSorter<DefaultTableModel> rowSorter;
-    private int userId;
+    private User user;
     private ProblemService problemService;
 
     // Table column names
-    private final String[] columnNames = {"Problem ID", "Problem Name", "Tags", "Difficulty"};
+    private final String[] columnNames = { "Problem ID", "Problem Name", "Tags", "Difficulty" };
 
     public ProblemsetScreen(int userId) {
-        this.userId = userId;
+        user = (new UserServiceImpl(new UserRepository())).getById(userId).get();
         initializeComponents();
         setupLayout();
         setupEventHandlers();
@@ -50,18 +53,18 @@ public class ProblemsetScreen extends JFrame {
                 return false; // Make table read-only
             }
         };
-        
+
         problemTable = new JTable(tableModel);
         problemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         problemTable.setRowHeight(25);
         problemTable.getTableHeader().setReorderingAllowed(false);
-        
+
         // Set column widths
         problemTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Problem ID
         problemTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Problem Name
         problemTable.getColumnModel().getColumn(2).setPreferredWidth(200); // Tags
         problemTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Difficulty
-        
+
         // Create row sorter for filtering
         rowSorter = new TableRowSorter<>(tableModel);
         problemTable.setRowSorter(rowSorter);
@@ -69,8 +72,8 @@ public class ProblemsetScreen extends JFrame {
         // Create filter components
         filterTextField = new JTextField(25);
         filterTextField.setPreferredSize(new Dimension(250, 30));
-        
-        String[] filterOptions = {"All", "Problem ID", "Problem Name", "Tags", "Difficulty"};
+
+        String[] filterOptions = { "All", "Problem ID", "Problem Name", "Tags", "Difficulty" };
         filterComboBox = new JComboBox<>(filterOptions);
         filterComboBox.setPreferredSize(new Dimension(120, 30));
 
@@ -93,9 +96,10 @@ public class ProblemsetScreen extends JFrame {
         refreshButton.setToolTipText("Refresh the problem list");
         createProblemButton.setToolTipText("Create a new problem");
         viewProblemButton.setToolTipText("View selected problem details");
-        
+
         // Initially disable view button
         viewProblemButton.setEnabled(false);
+        createProblemButton.setVisible(user.getUserType().equals("problem_setter"));
     }
 
     private void setupLayout() {
@@ -103,7 +107,7 @@ public class ProblemsetScreen extends JFrame {
 
         // Create main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
-        
+
         // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel("Problem Set");
@@ -114,10 +118,10 @@ public class ProblemsetScreen extends JFrame {
         // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.setBorder(BorderFactory.createTitledBorder("Filter"));
-        
+
         JLabel filterLabel = new JLabel("Filter by:");
         filterLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         filterPanel.add(filterLabel);
         filterPanel.add(Box.createHorizontalStrut(10));
         filterPanel.add(filterComboBox);
@@ -140,12 +144,12 @@ public class ProblemsetScreen extends JFrame {
 
         // Add components to main panel
         mainPanel.add(titlePanel, BorderLayout.NORTH);
-        
+
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(filterPanel, BorderLayout.NORTH);
         centerPanel.add(tableScrollPane, BorderLayout.CENTER);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         add(mainPanel, BorderLayout.CENTER);
@@ -235,7 +239,8 @@ public class ProblemsetScreen extends JFrame {
                 problems = problemService.getAllProblems();
             } else if (selectedFilter.equals("Problem ID")) {
                 var problemOptional = problemService.getProblemById(Integer.parseInt(filterTextField.getText().trim()));
-                problems = problemOptional.isPresent() ? List.of(new ProblemResDTO(problemOptional.get())) : new ArrayList<>();
+                problems = problemOptional.isPresent() ? List.of(new ProblemResDTO(problemOptional.get()))
+                        : new ArrayList<>();
             } else if (selectedFilter.equals("Problem Name")) {
                 problems = problemService.getProblemsByName(filterTextField.getText().trim());
             } else if (selectedFilter.equals("Tags")) {
@@ -246,21 +251,20 @@ public class ProblemsetScreen extends JFrame {
             } else {
                 problems = new ArrayList<>(); // Default to empty list if no valid filter
             }
-            
             // Add problems to table
             for (ProblemResDTO problem : problems) {
                 Object[] rowData = {
-                    problem.problemId(),
-                    problem.problemName(),
-                    problem.tags() != null ? problem.tags() : "",
-                    problem.difficulty() != null ? problem.difficulty() : ""
+                        problem.problemId(),
+                        problem.problemName(),
+                        problem.tags() != null ? problem.tags() : "",
+                        problem.difficulty() != null ? problem.difficulty() : ""
                 };
                 tableModel.addRow(rowData);
             }
-            
+
             // Update status
             setTitle("OJX - Problem Set (" + problems.size() + " problems)");
-            
+
         } catch (Exception e) {
             showErrorMessage("Error loading problems: " + e.getMessage());
         }
@@ -269,13 +273,12 @@ public class ProblemsetScreen extends JFrame {
     private void applyFilter() {
         String filterText = filterTextField.getText().trim();
         String filterType = (String) filterComboBox.getSelectedItem();
-        
         if (filterText.isEmpty() || "All".equals(filterType)) {
             rowSorter.setRowFilter(null);
         } else {
             try {
                 RowFilter<DefaultTableModel, Object> filter = null;
-                
+
                 switch (filterType) {
                     case "Problem ID":
                         // Filter by Problem ID (exact match or starts with)
@@ -298,9 +301,7 @@ public class ProblemsetScreen extends JFrame {
                         filter = RowFilter.regexFilter("(?i)" + filterText);
                         break;
                 }
-                
                 rowSorter.setRowFilter(filter);
-                
             } catch (java.util.regex.PatternSyntaxException e) {
                 // If regex is invalid, show all rows
                 rowSorter.setRowFilter(null);
@@ -325,20 +326,18 @@ public class ProblemsetScreen extends JFrame {
             showErrorMessage("Please select a problem to view.");
             return;
         }
-        
         // Convert view row index to model row index (important for filtered tables)
         int modelRow = problemTable.convertRowIndexToModel(selectedRow);
-        
+
         // Get problem details
         Object problemId = tableModel.getValueAt(modelRow, 0);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ViewProblemScreen viewScreen = new ViewProblemScreen((Integer) problemId, userId);
+                ViewProblemScreen viewScreen = new ViewProblemScreen((Integer) problemId, user.getUserId());
                 viewScreen.setVisible(true);
             }
         });
-        
     }
 
     private void handleBack() {
@@ -360,7 +359,6 @@ public class ProblemsetScreen extends JFrame {
         if (selectedRow == -1) {
             return -1;
         }
-        
         int modelRow = problemTable.convertRowIndexToModel(selectedRow);
         return (Integer) tableModel.getValueAt(modelRow, 0);
     }
@@ -375,7 +373,6 @@ public class ProblemsetScreen extends JFrame {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
                 new ProblemsetScreen(1).setVisible(true);
             }
         });

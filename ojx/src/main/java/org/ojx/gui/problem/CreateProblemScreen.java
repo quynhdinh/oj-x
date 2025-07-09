@@ -412,6 +412,7 @@ public class CreateProblemScreen extends JFrame {
                     TestCase testCase = new TestCase.Builder()
                             .input(panel.getInput())
                             .output(panel.getExpectedOutput())
+                            .is_sample(1)
                             .build();
                     testCases.add(testCase);
                 }

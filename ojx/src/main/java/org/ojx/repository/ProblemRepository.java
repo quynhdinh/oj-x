@@ -132,12 +132,13 @@ public class ProblemRepository {
     public int create(CreateProblemDTO problem) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME
-                    + " (problem_name, problem_statement, difficulty, isVisible) VALUES (?, ?, ?, ?)";
+                    + " (problem_name, problem_statement, difficulty, tags, isVisible) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, problem.problemName());
                 pstmt.setString(2, problem.problemStatement());
                 pstmt.setString(3, problem.difficulty());
-                pstmt.setBoolean(4, problem.isVisible());
+                pstmt.setString(4, problem.tags());
+                pstmt.setBoolean(5, problem.isVisible());
 
                 int affectedRows = pstmt.executeUpdate();
                 if (affectedRows == 0) {

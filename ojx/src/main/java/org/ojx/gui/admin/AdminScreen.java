@@ -229,15 +229,22 @@ public class AdminScreen extends JFrame {
     }
     
     private void handleProblemManagement() {
-        showInfoMessage("Problem Management", 
-            "Problem Management features:\n\n" +
-            "• Create new problems\n" +
-            "• Edit existing problems\n" +
-            "• Manage test cases\n" +
-            "• Set problem difficulty\n" +
-            "• Organize problem categories\n" +
-            "• Review problem submissions\n\n" +
-            "This feature will be implemented in the next version.");
+        // showInfoMessage("Problem Management", 
+        //     "Problem Management features:\n\n" +
+        //     "• Create new problems\n" +
+        //     "• Edit existing problems\n" +
+        //     "• Manage test cases\n" +
+        //     "• Set problem difficulty\n" +
+        //     "• Organize problem categories\n" +
+        //     "• Review problem submissions\n\n" +
+        //     "This feature will be implemented in the next version.");
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ProblemManagementScreen(1).setVisible(true);
+            }
+        });
     }
     
     private void handleBack() {
