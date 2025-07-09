@@ -13,6 +13,7 @@ public interface UserService {
     int save(User user);
     int update(User user);
     int isAuthenticated(String userName, String password) throws SQLException;
-    // boolean isAdmin(String userName) throws SQLException;
     Optional<User> getById(int userId);
+    boolean deleteUser(int userId);
+    boolean resetPassword(int userId, String newPassword);
 }

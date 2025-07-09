@@ -235,31 +235,8 @@ public class UserManagementScreen extends JFrame {
     }
     
     private void showUserDetails(User user) {
-        StringBuilder details = new StringBuilder();
-        details.append("User Details:\n\n");
-        details.append("User ID: ").append(user.getUserId()).append("\n");
-        details.append("Username: ").append(user.getUserName()).append("\n");
-        details.append("User Type: ").append(user.getUserType()).append("\n");
-        details.append("Email: ").append(user.getEmail()).append("\n");
-        details.append("Name: ").append(user.getName()).append("\n");
-        details.append("Country: ").append(user.getCountry()).append("\n");
-        details.append("Rating: ").append(user.getRating()).append("\n");
-        details.append("Password: ").append(user.getPassword()).append("\n");
-        
-        JTextArea textArea = new JTextArea(details.toString());
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        textArea.setCaretPosition(0);
-        
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(400, 300));
-        
-        JOptionPane.showMessageDialog(
-            this,
-            scrollPane,
-            "User Details - " + user.getUserName(),
-            JOptionPane.INFORMATION_MESSAGE
-        );
+        // Open ViewUserScreen instead of showing a dialog
+        ViewUserScreen.showUserDetail(user);
     }
     
     private void handleQuit() {

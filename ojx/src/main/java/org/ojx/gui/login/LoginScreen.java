@@ -160,14 +160,14 @@ public class LoginScreen extends JFrame {
         }
 
         int type = userService.isAuthenticated(username, password);
-        if (type == -1) {
+        if (type <= 0) {
             showErrorMessage("Invalid username or password");
             passwordField.setText("");
             passwordField.requestFocus();
             return;
         }
         Optional<User> userOpt = userService.getByUserName(username);
-        showSuccessMessage("Login successful as " + (type == 2 ? "an admin" : "a user") + "! Welcome " + username);
+        showSuccessMessage("Login successful as " + userOpt.get().getUserType() + "! Welcome " + username);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

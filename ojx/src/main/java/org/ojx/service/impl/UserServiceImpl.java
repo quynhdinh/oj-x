@@ -45,4 +45,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.updateUser(user);
     }
 
+    @Override
+    public boolean deleteUser(int userId) {
+        try {
+            int result = userRepository.deleteUser(userId);
+            return result > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean resetPassword(int userId, String newPassword) {
+        try {
+            int result = userRepository.resetPassword(userId, newPassword);
+            return result > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

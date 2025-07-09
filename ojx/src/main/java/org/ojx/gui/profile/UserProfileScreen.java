@@ -252,6 +252,7 @@ public class UserProfileScreen extends JFrame {
         String email = emailField.getText().trim();
         String name = nameField.getText().trim();
         String country = countryField.getText().trim();
+        int rating = Integer.parseInt(ratingField.getText().trim());
         User new_User = User.builder()
                 .userId(userId)
                 .userType(userType)
@@ -260,6 +261,7 @@ public class UserProfileScreen extends JFrame {
                 .email(email)
                 .name(name)
                 .country(country)
+                .rating(rating)
                 .build();
         if (userService.update(new_User) > 0)
             showSuccessMessage("Profile updated successfully!");

@@ -135,7 +135,7 @@ public class UserRepository {
     public int updateUser(User user) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "UPDATE " + TABLE_NAME
-                    + " SET user_type = ?, user_name = ?, password = ?, email = ?, name = ?, country = ? WHERE user_id = ?";
+                    + " SET user_type = ?, user_name = ?, password = ?, email = ?, name = ?, country = ?, rating = ? WHERE user_id = ?";
             try (var preparedStatement = conn.prepareStatement(sql)) {
                 preparedStatement.setString(1, user.getUserType());
                 preparedStatement.setString(2, user.getUserName());
@@ -143,11 +143,39 @@ public class UserRepository {
                 preparedStatement.setString(4, user.getEmail());
                 preparedStatement.setString(5, user.getName());
                 preparedStatement.setString(6, user.getCountry());
-                preparedStatement.setInt(7, user.getUserId());
+                preparedStatement.setInt(7, user.getRating());
+                preparedStatement.setInt(8, user.getUserId());
                 return preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             log.warning("SQLException thrown:\n" + e.getMessage());
+            return -1;
+        }
+    }
+
+    public int resetPassword(int userId, String newPassword) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "UPDATE " + TABLE_NAME + " SET password = ? WHERE user_id = ?";
+            try (var preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setString(1, newPassword);
+                preparedStatement.setInt(2, userId);
+                return preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            log.warning("SQLException thrown while resetting password:\n" + e.getMessage());
+            return -1;
+        }
+    }
+
+    public int deleteUser(int userId) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "DELETE FROM " + TABLE_NAME + " WHERE user_id = ?";
+            try (var preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setInt(1, userId);
+                return preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            log.warning("SQLException thrown while deleting user:\n" + e.getMessage());
             return -1;
         }
     }
