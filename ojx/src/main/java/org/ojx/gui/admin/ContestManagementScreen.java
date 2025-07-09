@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class ContestManagementScreen extends JFrame {
     private JTable contestTable;
@@ -247,14 +248,28 @@ public class ContestManagementScreen extends JFrame {
     }
     
     private void handleCreateContest() {
-        showInfoMessage("Create Contest", 
-            "Create Contest functionality will include:\n\n" +
-            "• Set contest name and description\n" +
-            "• Configure start time and duration\n" +
-            "• Assign problems to contest\n" +
-            "• Set point distribution\n" +
-            "• Configure contest rules\n\n" +
-            "This feature will be implemented in the next version.");
+        // Create a new empty contest for creation
+        Contest newContest = new Contest(
+            0, // ID will be auto-generated
+            "", // Empty name to be filled
+            120, // Default 2 hours
+            System.currentTimeMillis() / 1000L, // Current time as default
+            "", // Empty problem IDs
+            "" // Empty points
+        );
+        
+        // Show UpdateCreateContestScreen with create mode
+        UpdateCreateContestScreen createScreen = new UpdateCreateContestScreen(newContest);
+        createScreen.setTitle("OJX - Create New Contest");
+        createScreen.setVisible(true);
+        
+        // Refresh the list when the create screen is closed
+        createScreen.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                refreshContestList();
+            }
+        });
     }
     
     private void handleUpdateContest() {
@@ -269,20 +284,28 @@ public class ContestManagementScreen extends JFrame {
         
         if (contestIdObj instanceof Integer) {
             int contestId = (Integer) contestIdObj;
-            String contestName = (String) tableModel.getValueAt(selectedRow, 1);
             
-            showInfoMessage("Update Contest", 
-                "Update Contest functionality for:\n" +
-                "Contest ID: " + contestId + "\n" +
-                "Contest Name: " + contestName + "\n\n" +
-                "Update features will include:\n" +
-                "• Modify contest details\n" +
-                "• Change start time and duration\n" +
-                "• Update problem list\n" +
-                "• Adjust point distribution\n" +
-                "• Manage contest settings\n\n" +
-                "This feature will be implemented in the next version.");
+            // Get the full contest object from the service
+            Optional<Contest> contestOpt = contestService.getContestById(contestId);
             
+            if (contestOpt.isPresent()) {
+                Contest contest = contestOpt.get();
+                
+                // Show UpdateCreateContestScreen with update mode
+                UpdateCreateContestScreen updateScreen = new UpdateCreateContestScreen(contest);
+                updateScreen.setTitle("OJX - Update Contest: " + contest.getContestName());
+                updateScreen.setVisible(true);
+                
+                // Refresh the list when the update screen is closed
+                updateScreen.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                        refreshContestList();
+                    }
+                });
+            } else {
+                showErrorMessage("Contest not found in database.");
+            }
         } else {
             showErrorMessage("Invalid contest selection.");
         }
@@ -294,10 +317,6 @@ public class ContestManagementScreen extends JFrame {
     
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void showInfoMessage(String title, String message) {
-        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
     
     // Getters for external access

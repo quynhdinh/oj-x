@@ -65,7 +65,7 @@ public class ContestRepository {
                 int id = rs.getInt("contest_id");
                 String contestName = rs.getString("contest_name");
                 int length = rs.getInt("length");
-                long startedAt = rs.getLong("start_at");
+                long startedAt = rs.getLong("started_at");
                 String problemIds = rs.getString("problem_ids");
                 String points = rs.getString("points");
                 return Optional.of(new Contest(id, contestName, length, startedAt, problemIds, points));
