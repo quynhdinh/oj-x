@@ -148,7 +148,7 @@ public class UserRepository {
             }
         } catch (SQLException e) {
             log.warning("SQLException thrown:\n" + e.getMessage());
+            return -1;
         }
-        return -1;
     }
 }

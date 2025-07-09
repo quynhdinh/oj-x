@@ -261,8 +261,11 @@ public class UserProfileScreen extends JFrame {
                 .name(name)
                 .country(country)
                 .build();
-        userService.update(new_User);
-        showSuccessMessage("Profile updated successfully!");
+        if (userService.update(new_User) > 0)
+            showSuccessMessage("Profile updated successfully!");
+        else
+            showErrorMessage("Profile updated unsuccessfully");
+
     }
 
     private boolean validateFields() {
@@ -363,16 +366,7 @@ public class UserProfileScreen extends JFrame {
     }
 
     private void handleQuit() {
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                "Are you sure you want to quit without saving?",
-                "Confirm Quit",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-        if (result == JOptionPane.YES_OPTION) {
-            dispose();
-        }
+        dispose();
     }
 
     private void showErrorMessage(String message) {
