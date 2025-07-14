@@ -193,7 +193,26 @@ Provide sequence diagrams for important use cases.
 
 ## 10. Screenshots
 
-Include relevant screenshots of your application's interface and features.
+User can log in to the system
+
+![Login](img/login.png)
+
+User can sign up
+
+![Signup](img/signup.png)
+
+The home screen
+
+![Home](img/home.png)
+
+User can participate in contests
+![Contest](img/contest.png)
+
+User can browse problems to solve
+![Problem Set](img/problem_set.png)
+
+User can see submissions of any one using the system
+![Submission](img/submission.png)
 
 ---
 
@@ -210,8 +229,12 @@ Detailed, step-by-step instructions for:
 ---
 
 ## 12. How to Use
+The application database is hosted on MySQL and deployed using a running instance. All you have to do is to have your machine running Java 24.
 
-Provide a user guide or demo steps, including sample commands, test data, or login info (if relevant).
+Download the jar file from `./ojx` and running the following command:
+```bash
+java -jar ojx-1.0-SNAPSHOT.jar
+```
 
 ---
 
@@ -251,4 +274,3 @@ List all external resources, libraries, frameworks, and sources consulted.
 | **Documentation & Reporting**                |    1   | Detailed README: all sections complete (screenshots, diagrams, instructions, principles, references, etc).   |
 | **Presentation & Teamwork**                  |    1   | Professionalism in presentation (repo, submission, screenshots), teamwork (if applicable), and originality.  |
 | **Total**                                    | **10** |                                                                                                              |
-

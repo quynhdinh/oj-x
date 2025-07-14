@@ -44,7 +44,7 @@ public class ContestDetailScreen extends JFrame {
         
         // Determine if contest is currently active
         long currentTime = System.currentTimeMillis() / 1000;
-        long contestEndTime = contest.getStartedAt() + (contest.getLength() * 60 * 1000L);
+        long contestEndTime = contest.getStartedAt() + (1L * contest.getLength() * 60 * 1000L);
         this.isContestActive = currentTime >= contest.getStartedAt() && currentTime < contestEndTime;
 
         initializeComponents();
@@ -202,7 +202,7 @@ public class ContestDetailScreen extends JFrame {
             
             // Determine status
             long currentTime = System.currentTimeMillis();
-            long contestEndTime = contest.getStartedAt() * 1000 + (contest.getLength() * 60 * 1000L);
+            long contestEndTime = 1L * contest.getStartedAt() * 1000 + (1L * contest.getLength() * 60 * 1000L);
             String status;
             if (currentTime < contest.getStartedAt() * 1000) {
                 status = "Upcoming";

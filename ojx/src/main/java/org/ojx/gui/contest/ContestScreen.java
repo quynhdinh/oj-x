@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class ContestScreen extends JFrame {
     private JTable contestTable;
@@ -160,9 +161,9 @@ public class ContestScreen extends JFrame {
             tableModel.setRowCount(0);
             
             // Load contests from service
-            contests = contestService.getAll(); // Store in class field
+            contests = Optional.ofNullable(contestService.getAll()).orElseGet(List::of);
             
-            if (contests != null && !contests.isEmpty()) {
+            if (!contests.isEmpty()) {
                 // Note: Since Contest model doesn't have start_time field, 
                 // we'll create mock data for demonstration
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");

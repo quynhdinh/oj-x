@@ -101,36 +101,36 @@ public class AdminScreen extends JFrame {
     private void setupLayout() {
         setLayout(new BorderLayout());
         
-        // Create main panel
+        // Create main panel with tighter spacing
         JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         mainPanel.setBackground(Color.WHITE);
         
         GridBagConstraints gbc = new GridBagConstraints();
         
         // Title
         JLabel titleLabel = new JLabel("Admin Panel");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(new Color(52, 58, 64));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 40, 0);
+        gbc.insets = new Insets(0, 0, 15, 0);
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(titleLabel, gbc);
         
         // Subtitle
         JLabel subtitleLabel = new JLabel("Choose a management option");
-        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         subtitleLabel.setForeground(new Color(108, 117, 125));
         subtitleLabel.setHorizontalAlignment(JLabel.CENTER);
         gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 30, 0);
+        gbc.insets = new Insets(0, 0, 15, 0);
         mainPanel.add(subtitleLabel, gbc);
         
         // User Management Button
         gbc.gridy = 2;
-        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.insets = new Insets(5, 0, 5, 0);
         mainPanel.add(userManagementButton, gbc);
         
         // Contest Management Button
@@ -143,18 +143,18 @@ public class AdminScreen extends JFrame {
         
         // Back Button
         gbc.gridy = 5;
-        gbc.insets = new Insets(30, 0, 0, 0);
+        gbc.insets = new Insets(15, 0, 0, 0);
         mainPanel.add(backButton, gbc);
         
         add(mainPanel, BorderLayout.CENTER);
         
-        // Add admin icon or decoration
+        // Add admin icon or decoration with reduced padding
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         headerPanel.setBackground(new Color(248, 249, 250));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JLabel iconLabel = new JLabel("⚙");
-        iconLabel.setFont(new Font("Arial", Font.PLAIN, 48));
+        iconLabel.setFont(new Font("Arial", Font.PLAIN, 36));
         iconLabel.setForeground(new Color(52, 144, 220));
         headerPanel.add(iconLabel);
         
@@ -197,7 +197,7 @@ public class AdminScreen extends JFrame {
     private void setupFrame() {
         setTitle("OJX - Admin Panel");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(450, 600);
+        setSize(400, 450);
         setLocationRelativeTo(null);
         setResizable(false);
         
