@@ -45,6 +45,33 @@ Describe the system from the user's perspective using user stories:
 * As a \[user role], I want to \[feature] so that \[benefit].
 * ...
 
+* As an admin, I want to manage user accounts so that I can control access and ensure a safe environment.
+
+* As an admin, I want to review submitted problems so that I can ensure they meet quality standards before they are published.
+
+* As an admin, I want to generate reports on user activity so that I can analyze engagement and identify areas for improvement.
+
+User User Stories
+
+* As a user, I want to view and solve categorized programming problems so that I can practice specific skills and track my progress.
+
+* As a user, I want to participate in coding contests so that I can challenge myself and compete with others.
+
+* As a user, I want to receive instant feedback on my submissions so that I can learn from my mistakes and improve my coding skills.
+
+* As a user, I want to save my favorite problems so that I can revisit them for practice later.
+
+Problem Setter User Stories
+
+* As a problem setter, I want to create and submit new problems so that I can contribute to the platform and help other users learn.
+
+* As a problem setter, I want to set difficulty levels for problems so that users can choose challenges that match their skills.
+
+* As a problem setter, I want to review user submissions for my problems so that I can provide insights and feedback on their solutions.
+
+* As a problem setter, I want to categorize my problems so that users can easily find relevant challenges based on their interests.
+
+
 ---
 
 ## 3. Functional Requirements
