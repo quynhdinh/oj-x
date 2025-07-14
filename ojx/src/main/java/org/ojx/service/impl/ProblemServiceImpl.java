@@ -59,4 +59,10 @@ public class ProblemServiceImpl implements ProblemService {
     public int setVisible(String problems, boolean isVisible) {
         return problemRepository.setVisible(problems, isVisible);
     }
+
+    @Override
+    public void delete(Integer problemIdObj) {
+        testCaseRepository.deleteTestCasesByProblemId(problemIdObj);
+        problemRepository.delete(problemIdObj);
+    }
 }

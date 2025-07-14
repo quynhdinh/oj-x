@@ -16,7 +16,7 @@ public class ViewUserScreen extends JFrame {
     
     // UI Components
     private JTextField userIdField;
-    private JTextField userTypeField;
+    private JComboBox<String> userTypeComboBox;
     private JTextField userNameField;
     private JTextField emailField;
     private JTextField nameField;
@@ -50,9 +50,11 @@ public class ViewUserScreen extends JFrame {
         userIdField.setEditable(false);
         userIdField.setBackground(new Color(245, 245, 245)); // Light gray for read-only
         
-        userTypeField = new JTextField(20);
-        userTypeField.setEditable(true);
-        userTypeField.setBackground(Color.WHITE);
+        // Create combo box for user types
+        String[] userTypes = {"user", "admin", "problem_setter"};
+        userTypeComboBox = new JComboBox<>(userTypes);
+        userTypeComboBox.setBackground(Color.WHITE);
+        userTypeComboBox.setPreferredSize(new Dimension(200, 25));
         
         userNameField = new JTextField(20);
         userNameField.setEditable(true);
@@ -115,6 +117,7 @@ public class ViewUserScreen extends JFrame {
         deleteButton.setToolTipText("Delete this user account");
         resetPasswordButton.setToolTipText("Reset user's password to a default value");
         quitButton.setToolTipText("Close this window");
+        userTypeComboBox.setToolTipText("Select user type: user, admin, or problem_setter");
     }
     
     private void setupLayout() {
@@ -159,7 +162,7 @@ public class ViewUserScreen extends JFrame {
         userTypeLabel.setFont(new Font("Arial", Font.BOLD, 14));
         mainPanel.add(userTypeLabel, gbc);
         gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0;
-        mainPanel.add(userTypeField, gbc);
+        mainPanel.add(userTypeComboBox, gbc);
         
         // Username
         gbc.gridx = 0; gbc.gridy = 3; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0;
@@ -254,7 +257,7 @@ public class ViewUserScreen extends JFrame {
     private void populateFields() {
         if (user != null) {
             userIdField.setText(String.valueOf(user.getUserId()));
-            userTypeField.setText(user.getUserType());
+            userTypeComboBox.setSelectedItem(user.getUserType());
             userNameField.setText(user.getUserName());
             emailField.setText(user.getEmail());
             nameField.setText(user.getName());
@@ -286,7 +289,7 @@ public class ViewUserScreen extends JFrame {
     private void handleUpdate() {
         try {
             // Validate input fields
-            String userType = userTypeField.getText().trim();
+            String userType = (String) userTypeComboBox.getSelectedItem();
             String userName = userNameField.getText().trim();
             String email = emailField.getText().trim();
             String name = nameField.getText().trim();
@@ -294,7 +297,7 @@ public class ViewUserScreen extends JFrame {
             String ratingText = ratingField.getText().trim();
             
             // Basic validation
-            if (userType.isEmpty() || userName.isEmpty() || email.isEmpty() || name.isEmpty()) {
+            if (userType == null || userType.isEmpty() || userName.isEmpty() || email.isEmpty() || name.isEmpty()) {
                 showErrorMessage("Please fill in all required fields.");
                 return;
             }

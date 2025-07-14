@@ -14,7 +14,7 @@ public class TestCaseRepository {
     private static final String TABLE_NAME = "test_case";
 
     public boolean createTestCase(int problemId, String input, String output, int is_sample) {
-        try(Connection conn = ConnectionManager.getConnection()) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME + " (problem_id, input, output, is_sample) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, problemId);
@@ -30,7 +30,7 @@ public class TestCaseRepository {
     }
 
     public boolean createTestCaseInBatch(int problemId, List<TestCase> testCases) {
-        try(Connection conn = ConnectionManager.getConnection()) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME + " (problem_id, input, output, is_sample) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             for (TestCase testCase : testCases) {
@@ -49,7 +49,7 @@ public class TestCaseRepository {
     }
 
     public List<TestCase> getTestCasesByProblemId(int problemId) {
-        try(Connection conn = ConnectionManager.getConnection()) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "SELECT * FROM " + TABLE_NAME + " WHERE problem_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, problemId);
@@ -94,6 +94,17 @@ public class TestCaseRepository {
             e.printStackTrace();
         }
         return List.of();
+    }
+
+    public void deleteTestCasesByProblemId(Integer problemIdObj) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "DELETE FROM " + TABLE_NAME + " WHERE problem_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, problemIdObj);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

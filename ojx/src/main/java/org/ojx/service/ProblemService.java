@@ -15,4 +15,5 @@ public interface ProblemService {
     int create(CreateProblemDTO problem);
     List<ProblemResDTO> getProblemsByName(String name);
     List<ProblemResDTO> getProblemsByTags(String tags);
+    void delete(Integer problemIdObj);
 }

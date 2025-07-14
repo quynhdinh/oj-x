@@ -209,7 +209,6 @@ public class SignupScreen extends JDialog {
                 .country(country)
                 .rating(1400)
                 .build();
-        System.out.println(user);
         userService.save(user);
         showSuccessMessage("Account created successfully!\nUsername: " + username + "\nEmail: " + email);
         

@@ -232,4 +232,16 @@ public class ProblemRepository {
         }
         return 0;
     }
+
+    public void delete(Integer problemIdObj) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            String sql = "DELETE FROM " + TABLE_NAME + " WHERE problem_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, problemIdObj);
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            log.severe("Error deleting problem: " + e.getMessage());
+        }
+    }
 }

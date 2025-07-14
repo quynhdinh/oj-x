@@ -3,6 +3,7 @@ package org.ojx.gui.problem;
 import javax.swing.*;
 import org.ojx.model.Problem;
 import org.ojx.model.TestCase;
+import org.ojx.model.User;
 import org.ojx.repository.ProblemRepository;
 import org.ojx.service.ProblemService;
 import org.ojx.service.SubmissionService;
@@ -10,7 +11,9 @@ import org.ojx.service.TestCaseService;
 import org.ojx.service.impl.ProblemServiceImpl;
 import org.ojx.service.impl.SubmissionServiceImpl;
 import org.ojx.service.impl.TestCaseServiceImpl;
+import org.ojx.service.impl.UserServiceImpl;
 import org.ojx.repository.TestCaseRepository;
+import org.ojx.repository.UserRepository;
 import org.ojx.repository.SubmissionRepository;
 
 import java.awt.*;
@@ -35,7 +38,7 @@ public class ViewProblemScreen extends JFrame {
     private SubmissionService submissionService;
     private TestCaseService testCaseService;
     private int problemId;
-    private int userId; // Current logged-in user
+    private int userId;
 
     public ViewProblemScreen(int problemId, int userId) {
         this.problemId = problemId;
@@ -49,28 +52,46 @@ public class ViewProblemScreen extends JFrame {
         testCaseService = new TestCaseServiceImpl(new TestCaseRepository());
         loadProblemData();
     }
+    private void setFieldsEditable(){
+        User user = (new UserServiceImpl(new UserRepository())).getById(userId).orElse(null);
+        if (user != null && user.getUserType().toString().equals("admin")) {
+            problemIdField.setEditable(true);
+            problemNameField.setEditable(true);
+            difficultyField.setEditable(true);
+            tagsField.setEditable(true);
+            problemStatementArea.setEditable(true);
+            testCasesArea.setEditable(true);
+        } else {
+            problemIdField.setEditable(false);
+            problemNameField.setEditable(false);
+            difficultyField.setEditable(false);
+            tagsField.setEditable(false);
+            problemStatementArea.setEditable(false);
+            testCasesArea.setEditable(false);
+        }
+    }
 
     private void initializeComponents() {
         // Create read-only text fields for problem details
         problemIdField = new JTextField(30);
-        problemIdField.setEditable(false);
+        // problemIdField.setEditable(false);
         problemIdField.setBackground(Color.WHITE);
         
         problemNameField = new JTextField(30);
-        problemNameField.setEditable(false);
+        // problemNameField.setEditable(false);
         problemNameField.setBackground(Color.WHITE);
         
         difficultyField = new JTextField(30);
-        difficultyField.setEditable(false);
+        // difficultyField.setEditable(false);
         difficultyField.setBackground(Color.WHITE);
         
         tagsField = new JTextField(30);
-        tagsField.setEditable(false);
+        // tagsField.setEditable(false);
         tagsField.setBackground(Color.WHITE);
 
         // Create problem statement area (read-only)
         problemStatementArea = new JTextArea(5, 60);
-        problemStatementArea.setEditable(false);
+        // problemStatementArea.setEditable(false);
         problemStatementArea.setBackground(Color.WHITE);
         problemStatementArea.setFont(new Font("Arial", Font.PLAIN, 14));
         problemStatementArea.setLineWrap(true);
@@ -79,12 +100,13 @@ public class ViewProblemScreen extends JFrame {
 
         // Create test cases area (read-only)
         testCasesArea = new JTextArea(4, 60);
-        testCasesArea.setEditable(false);
+        // testCasesArea.setEditable(false);
         testCasesArea.setBackground(Color.WHITE);
         testCasesArea.setFont(new Font("Courier New", Font.PLAIN, 12));
         testCasesArea.setLineWrap(false);
         testCasesArea.setBorder(BorderFactory.createLoweredBevelBorder());
 
+        setFieldsEditable();
         // Create large text area for source code submission
         sourceCodeArea = new JTextArea(20, 60);
         sourceCodeArea.setFont(new Font("Courier New", Font.PLAIN, 12));
