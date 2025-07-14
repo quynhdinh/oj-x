@@ -182,9 +182,9 @@ public class UserManagementScreen extends JFrame {
             // Load users from service
             List<User> users = userService.getAll();
             
-            // Populate table
-            for (User user : users) {
-                Object[] rowData = {
+            // Populate table using Stream API
+            users.stream()
+                .map(user -> new Object[] {
                     user.getUserId(),
                     user.getUserName(),
                     user.getUserType(),
@@ -192,9 +192,8 @@ public class UserManagementScreen extends JFrame {
                     user.getName(),
                     user.getCountry(),
                     user.getRating()
-                };
-                tableModel.addRow(rowData);
-            }
+                })
+                .forEach(tableModel::addRow);
             
             // Update total count
             totalUsersLabel.setText("Total: " + users.size() + " users");

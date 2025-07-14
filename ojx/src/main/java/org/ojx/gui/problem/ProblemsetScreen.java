@@ -251,16 +251,15 @@ public class ProblemsetScreen extends JFrame {
             } else {
                 problems = new ArrayList<>(); // Default to empty list if no valid filter
             }
-            // Add problems to table
-            for (ProblemResDTO problem : problems) {
-                Object[] rowData = {
-                        problem.problemId(),
-                        problem.problemName(),
-                        problem.tags() != null ? problem.tags() : "",
-                        problem.difficulty() != null ? problem.difficulty() : ""
-                };
-                tableModel.addRow(rowData);
-            }
+            // Add problems to table using Stream API
+            problems.stream()
+                .map(problem -> new Object[] {
+                    problem.problemId(),
+                    problem.problemName(),
+                    problem.tags() != null ? problem.tags() : "",
+                    problem.difficulty() != null ? problem.difficulty() : ""
+                })
+                .forEach(tableModel::addRow);
 
             // Update status
             setTitle("OJX - Problem Set (" + problems.size() + " problems)");

@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.ArrayList;
 
 public class CreateProblemScreen extends JFrame {
@@ -406,16 +408,14 @@ public class CreateProblemScreen extends JFrame {
                     return;
                 }
 
-                // Create test cases list
-                List<TestCase> testCases = new ArrayList<>();
-                for (TestCaseInputPanel panel : testCasePanels) {
-                    TestCase testCase = new TestCase.Builder()
+                // Create test cases list using Stream API
+                List<TestCase> testCases = testCasePanels.stream()
+                    .map(panel -> new TestCase.Builder()
                             .input(panel.getInput())
                             .output(panel.getExpectedOutput())
                             .is_sample(1)
-                            .build();
-                    testCases.add(testCase);
-                }
+                            .build())
+                    .collect(Collectors.toList());
 
                 // Create new problem using CreateProblemDTO
                 CreateProblemDTO problemDTO = new CreateProblemDTO(
@@ -586,11 +586,12 @@ public class CreateProblemScreen extends JFrame {
             testCasePanels.remove(panel);
             testCasesPanel.remove(panel);
             
-            // Renumber remaining test cases
-            for (int i = 0; i < testCasePanels.size(); i++) {
-                testCasePanels.get(i).testCaseNumber = i + 1;
-                testCasePanels.get(i).setBorder(BorderFactory.createTitledBorder("Test Case " + (i + 1)));
-            }
+            // Renumber remaining test cases using Stream API
+            IntStream.range(0, testCasePanels.size())
+                .forEach(i -> {
+                    testCasePanels.get(i).testCaseNumber = i + 1;
+                    testCasePanels.get(i).setBorder(BorderFactory.createTitledBorder("Test Case " + (i + 1)));
+                });
             
             testCasesPanel.revalidate();
             testCasesPanel.repaint();
@@ -603,13 +604,9 @@ public class CreateProblemScreen extends JFrame {
             return false;
         }
         
-        for (TestCaseInputPanel panel : testCasePanels) {
-            if (!panel.validateTestCase()) {
-                return false;
-            }
-        }
-        
-        return true;
+        // Using Stream API to validate all test cases
+        return testCasePanels.stream()
+            .allMatch(TestCaseInputPanel::validateTestCase);
     }
     
     private void clearTestCases() {
@@ -626,7 +623,8 @@ public class CreateProblemScreen extends JFrame {
             testCasePanels.clear();
             testCasesPanel.removeAll();
             
-            for (TestCase testCase : testCases) {
+            // Using Stream API to create and populate test case panels
+            testCases.stream().forEach(testCase -> {
                 int testCaseNumber = testCasePanels.size() + 1;
                 TestCaseInputPanel panel = new TestCaseInputPanel(testCaseNumber);
                 panel.setInput(testCase.getInput());
@@ -638,7 +636,7 @@ public class CreateProblemScreen extends JFrame {
                 if (testCasePanels.size() > 1) {
                     testCasesPanel.add(Box.createVerticalStrut(10));
                 }
-            }
+            });
             
             testCasesPanel.revalidate();
             testCasesPanel.repaint();
@@ -656,12 +654,10 @@ public class CreateProblemScreen extends JFrame {
         if (tagsString.isEmpty()) {
             return Arrays.asList();
         }
-        // Split by comma and trim whitespace
-        String[] tagArray = tagsString.split(",");
-        for (int i = 0; i < tagArray.length; i++) {
-            tagArray[i] = tagArray[i].trim();
-        }
-        return Arrays.asList(tagArray);
+        // Split by comma and trim whitespace using Stream API
+        return Arrays.stream(tagsString.split(","))
+            .map(String::trim)
+            .collect(java.util.stream.Collectors.toList());
     }
 
     private String formatTagsToString(List<String> tags) {

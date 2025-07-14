@@ -347,20 +347,23 @@ public class ViewProblemScreen extends JFrame {
             List<TestCase> sampleTestCases = testCaseService.getSampleTestCasesByProblemId(problemId);
             
             if (sampleTestCases != null && !sampleTestCases.isEmpty()) {
-                StringBuilder testCasesText = new StringBuilder();
+                // Build test cases display using Stream API
+                String testCasesText = java.util.stream.IntStream.range(0, sampleTestCases.size())
+                    .mapToObj(i -> {
+                        TestCase testCase = sampleTestCases.get(i);
+                        StringBuilder caseText = new StringBuilder();
+                        caseText.append("Test Case ").append(i + 1).append(":\n");
+                        caseText.append("Input:\n").append(testCase.getInput()).append("\n\n");
+                        caseText.append("Expected Output:\n").append(testCase.getOutput()).append("\n");
+                        
+                        if (i < sampleTestCases.size() - 1) {
+                            caseText.append("\n" + "=".repeat(50) + "\n\n");
+                        }
+                        return caseText.toString();
+                    })
+                    .collect(java.util.stream.Collectors.joining(""));
                 
-                for (int i = 0; i < sampleTestCases.size(); i++) {
-                    TestCase testCase = sampleTestCases.get(i);
-                    testCasesText.append("Test Case ").append(i + 1).append(":\n");
-                    testCasesText.append("Input:\n").append(testCase.getInput()).append("\n\n");
-                    testCasesText.append("Expected Output:\n").append(testCase.getOutput()).append("\n");
-                    
-                    if (i < sampleTestCases.size() - 1) {
-                        testCasesText.append("\n" + "=".repeat(50) + "\n\n");
-                    }
-                }
-                
-                testCasesArea.setText(testCasesText.toString());
+                testCasesArea.setText(testCasesText);
             } else {
                 testCasesArea.setText("No sample test cases available for this problem.");
             }

@@ -167,9 +167,8 @@ public class ContestScreen extends JFrame {
                 // we'll create mock data for demonstration
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 
-                for (int i = 0; i < contests.size(); i++) {
-                    Contest contest = contests.get(i);
-                    
+                // Using Stream API to populate contest table
+                contests.stream().map(contest -> {
                     // Mock start time (in real implementation, this would come from contest object)
                     Date start_Date = new Date(contest.getStartedAt() * 1000L);
                     String formattedStartTime = dateFormat.format(start_Date);
@@ -178,7 +177,7 @@ public class ContestScreen extends JFrame {
                     String status = start_Date.before(new Date()) ? "Ongoing" :
                                     (start_Date.after(new Date()) ? "Upcoming" : "Finished");
                     
-                    Object[] rowData = {
+                    return new Object[] {
                         getContestId(contest),
                         getContestName(contest),
                         getDuration(contest) + " min",
@@ -186,8 +185,7 @@ public class ContestScreen extends JFrame {
                         formattedStartTime,
                         status
                     };
-                    tableModel.addRow(rowData);
-                }
+                }).forEach(tableModel::addRow);
             } else {
                 // Add a message row if no contests found
                 Object[] noDataRow = {"No contests", "available", "", "", "", ""};

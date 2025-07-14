@@ -33,13 +33,18 @@ public class TestCaseRepository {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME + " (problem_id, input, output, is_sample) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
-            for (TestCase testCase : testCases) {
-                ps.setInt(1, problemId);
-                ps.setString(2, testCase.getInput());
-                ps.setString(3, testCase.getOutput());
-                ps.setInt(4, testCase.is_sample());
-                ps.addBatch();
-            }
+            // Using Stream API to add batch parameters
+            testCases.stream().forEach(testCase -> {
+                try {
+                    ps.setInt(1, problemId);
+                    ps.setString(2, testCase.getInput());
+                    ps.setString(3, testCase.getOutput());
+                    ps.setInt(4, testCase.is_sample());
+                    ps.addBatch();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             int[] rowsAffected = ps.executeBatch();
             return rowsAffected.length == testCases.size();
         } catch (SQLException e) {

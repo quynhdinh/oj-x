@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.ojx.model.Contest;
 import org.ojx.model.Problem;
@@ -234,19 +236,20 @@ public class ContestDetailScreen extends JFrame {
                 problemsPanel.add(headerPanel);
                 problemsPanel.add(Box.createVerticalStrut(8));
                 
-                // Create problem list
-                for (int i = 0; i < problemIdList.size(); i++) {
-                    String problemId = problemIdList.get(i).trim();
-                    
-                    // Create problem panel with border and hover effect
-                    JPanel problemItemPanel = createProblemItemPanel(problemId, i + 1, isContestActive);
-                    problemsPanel.add(problemItemPanel);
-                    
-                    // Add spacing between problems
-                    if (i < problemIdList.size() - 1) {
-                        problemsPanel.add(Box.createVerticalStrut(3));
-                    }
-                }
+                // Create problem list using Stream API
+                IntStream.range(0, problemIdList.size())
+                    .forEach(i -> {
+                        String problemId = problemIdList.get(i).trim();
+                        
+                        // Create problem panel with border and hover effect
+                        JPanel problemItemPanel = createProblemItemPanel(problemId, i + 1, isContestActive);
+                        problemsPanel.add(problemItemPanel);
+                        
+                        // Add spacing between problems
+                        if (i < problemIdList.size() - 1) {
+                            problemsPanel.add(Box.createVerticalStrut(3));
+                        }
+                    });
                 
                 // Add status info if contest is not active
                 if (!isContestActive) {
@@ -296,18 +299,14 @@ public class ContestDetailScreen extends JFrame {
             problemsPanel.revalidate();
             problemsPanel.repaint();
             
-            // Parse and format points
+            // Parse and format points using Stream API
             String points = contest.getPoints();
             if (points != null && !points.trim().isEmpty()) {
                 List<String> pointsList = Arrays.asList(points.split(","));
-                StringBuilder formattedPoints = new StringBuilder();
-                for (int i = 0; i < pointsList.size(); i++) {
-                    formattedPoints.append("Problem ").append(i + 1).append(": ").append(pointsList.get(i).trim()).append(" points");
-                    if (i < pointsList.size() - 1) {
-                        formattedPoints.append("\n");
-                    }
-                }
-                pointsArea.setText(formattedPoints.toString());
+                String formattedPoints = IntStream.range(0, pointsList.size())
+                    .mapToObj(i -> "Problem " + (i + 1) + ": " + pointsList.get(i).trim() + " points")
+                    .collect(Collectors.joining("\n"));
+                pointsArea.setText(formattedPoints);
             } else {
                 pointsArea.setText("No points distribution specified");
             }

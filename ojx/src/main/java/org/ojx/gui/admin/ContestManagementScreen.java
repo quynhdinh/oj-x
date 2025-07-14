@@ -201,43 +201,42 @@ public class ContestManagementScreen extends JFrame {
             // Sort contests by start time (latest first)
             contests.sort((c1, c2) -> Long.compare(c2.getStartedAt(), c1.getStartedAt()));
             
-            // Populate table
+            // Populate table using Stream API
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            for (Contest contest : contests) {
-                // Format start time
-                String startTime = dateFormat.format(new Date(contest.getStartedAt() * 1000));
-                
-                // Determine status
-                long currentTime = System.currentTimeMillis();
-                long contestEndTime = contest.getStartedAt() * 1000 + (contest.getLength() * 60 * 1000L);
-                
-                String status;
-                if (currentTime < contest.getStartedAt()) {
-                    status = "Upcoming";
-                } else if (currentTime >= contest.getStartedAt() && currentTime < contestEndTime) {
-                    status = "Active";
-                } else {
-                    status = "Ended";
-                }
-                
-                // Count problems
-                String problemIds = contest.getProblemIds();
-                int problemCount = 0;
-                if (problemIds != null && !problemIds.trim().isEmpty()) {
-                    problemCount = problemIds.split(",").length;
-                }
-                
-                Object[] rowData = {
-                    contest.getContestId(),
-                    contest.getContestName(),
-                    contest.getLength(),
-                    startTime,
-                    status,
-                    problemCount + " problems",
-                    contest.getPoints() != null ? contest.getPoints() : "Not set"
-                };
-                tableModel.addRow(rowData);
-            }
+            long currentTime = System.currentTimeMillis();
+            
+            contests.stream()
+                .map(contest -> {
+                    // Format start time
+                    String startTime = dateFormat.format(new Date(contest.getStartedAt() * 1000));
+                    
+                    // Determine status
+                    long contestEndTime = contest.getStartedAt() * 1000 + (contest.getLength() * 60 * 1000L);
+                    String status;
+                    if (currentTime < contest.getStartedAt()) {
+                        status = "Upcoming";
+                    } else if (currentTime >= contest.getStartedAt() && currentTime < contestEndTime) {
+                        status = "Active";
+                    } else {
+                        status = "Ended";
+                    }
+                    
+                    // Count problems using Stream API  
+                    String problemIds = contest.getProblemIds();
+                    int problemCount = (problemIds != null && !problemIds.trim().isEmpty()) 
+                        ? problemIds.split(",").length : 0;
+                    
+                    return new Object[] {
+                        contest.getContestId(),
+                        contest.getContestName(),
+                        contest.getLength(),
+                        startTime,
+                        status,
+                        problemCount + " problems",
+                        contest.getPoints() != null ? contest.getPoints() : "Not set"
+                    };
+                })
+                .forEach(tableModel::addRow);
             
             // Update total count
             totalContestsLabel.setText("Total: " + contests.size() + " contests");

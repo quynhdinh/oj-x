@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.ojx.connection.ConnectionManager;
 import org.ojx.dto.CreateProblemDTO;
@@ -188,18 +191,22 @@ public class ProblemRepository {
         try (Connection conn = ConnectionManager.getConnection()) {
             StringBuilder sql = new StringBuilder("SELECT problem_id, problem_name, tags, difficulty FROM " + TABLE_NAME + " WHERE isVisible = 1");
             if (splits.length > 0) {
-                sql.append(" AND ");
-                for (int i = 0; i < splits.length; i++) {
-                    sql.append("LOWER(tags) LIKE LOWER(?)");
-                    if (i < splits.length - 1) {
-                        sql.append(" OR ");
-                    }
-                }
+                // Using Stream API to generate placeholder conditions  
+                String conditions = Arrays.stream(splits)
+                    .map(tag -> "LOWER(tags) LIKE LOWER(?)")
+                    .collect(Collectors.joining(" OR "));
+                sql.append(" AND ").append(conditions);
             }
             try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
-                for (int i = 0; i < splits.length; i++) {
-                    pstmt.setString(i + 1, "%" + splits[i].trim() + "%");
-                }
+                // Using Stream API for parameter setting with IntStream
+                IntStream.range(0, splits.length)
+                    .forEach(i -> {
+                        try {
+                            pstmt.setString(i + 1, "%" + splits[i].trim() + "%");
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 String string = pstmt.toString();
                 System.out.println(string);
                 try (ResultSet rs = pstmt.executeQuery()) {
