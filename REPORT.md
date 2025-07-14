@@ -34,7 +34,7 @@ Where a class should have only one instance (for example, for managing resources
 
 ## 1. Problem Description
 
-Provide a clear and concise explanation of the real-world problem your project aims to solve. Include background, motivation, and significance.
+This online judge system empowers users to enhance their programming skills through solving categorized problems and participating in contests. By providing a structured platform for practice and competition, it encourages continuous learning and skill development.
 
 ---
 
@@ -73,7 +73,7 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.oreilly.com%2Flibrary%2Fvi
 
 ### 5.3 Technologies Used
 
-List all major technologies (e.g., Java 21, Angular, MySQL, MongoDB, JavaFX, etc.).
+List all major technologies (e.g., Java 24, MySQL).
 
 ### 5.4 Layer Descriptions
 
