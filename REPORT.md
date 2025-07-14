@@ -43,13 +43,14 @@ This online judge system empowers users to enhance their programming skills thro
 Describe the system from the user's perspective using user stories:
 
 * As a \[user role], I want to \[feature] so that \[benefit].
-* ...
+
+Admin User Stories
 
 * As an admin, I want to manage user accounts so that I can control access and ensure a safe environment.
 
 * As an admin, I want to review submitted problems so that I can ensure they meet quality standards before they are published.
 
-* As an admin, I want to generate reports on user activity so that I can analyze engagement and identify areas for improvement.
+* As an admin, I want to set contest using problems that problem setter submitted and set points for each problems.
 
 User User Stories
 
@@ -59,7 +60,7 @@ User User Stories
 
 * As a user, I want to receive instant feedback on my submissions so that I can learn from my mistakes and improve my coding skills.
 
-* As a user, I want to save my favorite problems so that I can revisit them for practice later.
+* As a user, I want to manage my personal information by having a personal profile UI so that others know who I am
 
 Problem Setter User Stories
 
@@ -71,19 +72,68 @@ Problem Setter User Stories
 
 * As a problem setter, I want to categorize my problems so that users can easily find relevant challenges based on their interests.
 
-
 ---
 
 ## 3. Functional Requirements
+User Management
+    User Registration: Users must be able to create an account by providing necessary information (e.g., username, email, password).
+  
+    User Login/Logout: Users must be able to log in and log out securely.
 
-List the system's essential features and functionalities.
+    Profile Management: Users must be able to view and edit their profiles, including personal information and preferences.
+
+Problem Management
+
+    Problem Creation: Problem setters must be able to create, edit, and delete programming problems.
+    
+    Problem Categorization: Problems must be categorized by difficulty, topic, and tags for easy navigation.
+    
+    Problem Review: Admins must be able to review and approve problems before they are published.
+
+Submission and Evaluation
+
+    Code Submission: Users must be able to submit their code solutions for various problems.
+    
+    Automated Grading: The system must automatically compile and run submitted code against predefined test cases to evaluate correctness.
+    
+    Feedback and Results: Users must receive immediate feedback on their submissions, including whether their solution is correct and performance metrics.
+
+Contests
+
+    Contest Creation: Admins must be able to create and manage coding contests, including setting time limits and problem sets.
+    
+    Contest Participation: Users must be able to register for and participate in contests.
+    
+    Leaderboard: The system must maintain a leaderboard displaying participant rankings based on their performance in contests.
 
 ---
 
 ## 4. Non-Functional Requirements
 
 List requirements such as usability, security, reliability, performance, scalability, etc.
+Performance
 
+    Response Time: The system must respond to user actions (e.g., submissions, page loads) within 2 seconds under normal load.
+
+Scalability
+
+    User Capacity: The system must support at least 1,000 concurrent users without performance degradation.
+
+Security
+
+    Data Encryption: User data must be encrypted both in transit and at rest to ensure privacy and security.
+
+Usability
+
+    User Interface: The system must have an intuitive and user-friendly interface accessible to users with varying technical skills.
+
+Availability
+
+    Uptime: The system must have an uptime of 99.9% to ensure continuous access for users.
+
+Maintainability
+
+    Modular Architecture: The system must be designed with modular components to facilitate updates and maintenance.
 ---
 
 ## 5. Architecture of Project
