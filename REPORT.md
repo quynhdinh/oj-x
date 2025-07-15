@@ -124,15 +124,6 @@ Contests
 
 ## 4. Non-Functional Requirements
 
-List requirements such as usability, security, reliability, performance, scalability, etc.
-Performance
-
-    Response Time: The system must respond to user actions (e.g., submissions, page loads) within 2 seconds under normal load.
-
-Scalability
-
-    User Capacity: The system must support at least 1,000 concurrent users without performance degradation.
-
 Security
 
     Data Encryption: User data must be encrypted both in transit and at rest to ensure privacy and security.
@@ -144,10 +135,6 @@ Usability
 Availability
 
     Uptime: The system must have an uptime of 99.9% to ensure continuous access for users.
-
-Maintainability
-
-    Modular Architecture: The system must be designed with modular components to facilitate updates and maintenance.
 ---
 
 ## 5. Architecture of Project
@@ -164,7 +151,7 @@ Provide an overview of your system's layered architecture. Identify each layer a
 
 ### 5.3 Technologies Used
 
-List all major technologies (e.g., Java 24, MySQL).
+List all major technologies (e.g., Java 24, MySQL, Maven).
 
 ### 5.4 Layer Descriptions
 
@@ -278,8 +265,15 @@ The system extensively uses Java Stream API for collection processing:
 ---
 
 ## 9. Sequence Diagrams
+Here are the sequence diagrams for key use cases in the OJ-X system:
 
-Provide sequence diagrams for important use cases.
+Save Problem
+
+![](img/save_problem_seq.png)
+
+Submit Problem
+
+![](img/submit_seq.png)
 
 ---
 
@@ -305,6 +299,9 @@ User can browse problems to solve
 User can see submissions of any one using the system
 ![Submission](img/submission.png)
 
+Admin panel for managing users, problems, and contests
+
+![Admin Panel](img/admin_panel.png)
 ---
 
 ## 11. Installation & Deployment
@@ -316,9 +313,9 @@ Development environment setup instructions:
 2. Setting the environment variables located in the file `ojx/src/main/resources/application.properties/.env`. We need 3 variables
    * `DB_URL`: The URL to connect to the MySQL database, e.g., `jdbc:mysql://localhost:3306/ojx`
 
-   * `USERNAME`: The username to connect to the database
+   * `DB_USERNAME`: The username to connect to the database
 
-   * `PASSWORD`: The password to connect to the database
+   * `DB_PASSWORD`: The password to connect to the database
   
 * Move to project directory `ojx` `cd ojx`
 * Run script to run the application `./run.sh`
