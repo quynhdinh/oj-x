@@ -3,10 +3,10 @@ package org.ojx.connection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.ojx.config.DatabaseConfigManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,38 +20,24 @@ class ConnectionManagerTest {
         @Test
         @DisplayName("Should load configuration from .env file")
         void shouldLoadConfigurationFromEnvFile() throws Exception {
-            // This test verifies that the static block loads configuration correctly
-            // Since the static block runs when the class is loaded, we can only verify
-            // that the fields are populated (not null)
-            
-            Field dbUrlField = ConnectionManager.class.getDeclaredField("DB_URL");
-            Field usernameField = ConnectionManager.class.getDeclaredField("USERNAME");
-            Field passwordField = ConnectionManager.class.getDeclaredField("PASSWORD");
-            
-            dbUrlField.setAccessible(true);
-            usernameField.setAccessible(true);
-            passwordField.setAccessible(true);
-
-            String dbUrl = (String) dbUrlField.get(null);
-            String username = (String) usernameField.get(null);
-            String password = (String) passwordField.get(null);
+            // This test verifies that the DatabaseConfigManager loads configuration correctly
+            DatabaseConfigManager config = DatabaseConfigManager.getInstance();
 
             // Assert that configuration was loaded
-            assertNotNull(dbUrl, "DB_URL should be loaded from .env file");
-            assertNotNull(username, "USERNAME should be loaded from .env file");
-            assertNotNull(password, "PASSWORD should be loaded from .env file");
+            assertNotNull(config.getDbUrl(), "DB_URL should be loaded from .env file");
+            assertNotNull(config.getUsername(), "USERNAME should be loaded from .env file");
+            assertNotNull(config.getPassword(), "PASSWORD should be loaded from .env file");
             
-            assertFalse(dbUrl.trim().isEmpty(), "DB_URL should not be empty");
-            assertFalse(username.trim().isEmpty(), "USERNAME should not be empty");
-            assertFalse(password.trim().isEmpty(), "PASSWORD should not be empty");
+            assertFalse(config.getDbUrl().trim().isEmpty(), "DB_URL should not be empty");
+            assertFalse(config.getUsername().trim().isEmpty(), "USERNAME should not be empty");
+            assertFalse(config.getPassword().trim().isEmpty(), "PASSWORD should not be empty");
         }
 
         @Test
         @DisplayName("Should validate database URL format")
         void shouldValidateDatabaseUrlFormat() throws Exception {
-            Field dbUrlField = ConnectionManager.class.getDeclaredField("DB_URL");
-            dbUrlField.setAccessible(true);
-            String dbUrl = (String) dbUrlField.get(null);
+            DatabaseConfigManager config = DatabaseConfigManager.getInstance();
+            String dbUrl = config.getDbUrl();
 
             // Basic validation that it looks like a JDBC URL
             assertTrue(dbUrl.startsWith("jdbc:"), "DB_URL should start with 'jdbc:'");
@@ -61,17 +47,11 @@ class ConnectionManagerTest {
         @Test
         @DisplayName("Should have non-empty configuration values")
         void shouldHaveNonEmptyConfigurationValues() throws Exception {
-            Field dbUrlField = ConnectionManager.class.getDeclaredField("DB_URL");
-            Field usernameField = ConnectionManager.class.getDeclaredField("USERNAME");
-            Field passwordField = ConnectionManager.class.getDeclaredField("PASSWORD");
-            
-            dbUrlField.setAccessible(true);
-            usernameField.setAccessible(true);
-            passwordField.setAccessible(true);
+            DatabaseConfigManager config = DatabaseConfigManager.getInstance();
 
-            String dbUrl = (String) dbUrlField.get(null);
-            String username = (String) usernameField.get(null);
-            String password = (String) passwordField.get(null);
+            String dbUrl = config.getDbUrl();
+            String username = config.getUsername();
+            String password = config.getPassword();
 
             assertFalse(dbUrl.trim().isEmpty(), "DB_URL should not be empty");
             assertFalse(username.trim().isEmpty(), "USERNAME should not be empty");
@@ -81,17 +61,11 @@ class ConnectionManagerTest {
         @Test
         @DisplayName("Should validate database configuration properties")
         void shouldValidateDatabaseConfigurationProperties() throws Exception {
-            Field dbUrlField = ConnectionManager.class.getDeclaredField("DB_URL");
-            Field usernameField = ConnectionManager.class.getDeclaredField("USERNAME");
-            Field passwordField = ConnectionManager.class.getDeclaredField("PASSWORD");
-            
-            dbUrlField.setAccessible(true);
-            usernameField.setAccessible(true);
-            passwordField.setAccessible(true);
+            DatabaseConfigManager config = DatabaseConfigManager.getInstance();
 
-            String dbUrl = (String) dbUrlField.get(null);
-            String username = (String) usernameField.get(null);
-            String password = (String) passwordField.get(null);
+            String dbUrl = config.getDbUrl();
+            String username = config.getUsername();
+            String password = config.getPassword();
 
             // Test that URL contains expected database components
             if (dbUrl.contains("mysql")) {
@@ -106,6 +80,15 @@ class ConnectionManagerTest {
             
             // Password should meet minimum requirements
             assertTrue(password.length() >= 1, "Password should not be empty");
+        }
+
+        @Test
+        @DisplayName("Should maintain singleton behavior")
+        void shouldMaintainSingletonBehavior() {
+            DatabaseConfigManager config1 = DatabaseConfigManager.getInstance();
+            DatabaseConfigManager config2 = DatabaseConfigManager.getInstance();
+            
+            assertSame(config1, config2, "DatabaseConfigManager should return the same instance");
         }
     }
 

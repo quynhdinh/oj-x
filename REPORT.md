@@ -26,9 +26,27 @@ You must make use of the Java Stream API wherever it is applicable, especially f
 
 Implement unit tests for your business logic using JUnit or a similar testing framework. Include instructions for running your test suite and ensure your tests cover major functionalities and edge cases.
 
+The project includes unit tests for key business logic components, particularly in the `UserService` class. The tests cover scenarios such as:
+
+Run the following command to execute the tests:
+```bash
+mvn test
+```
+
 **Singleton Pattern:**
 
-Where a class should have only one instance (for example, for managing resources, database connections, configuration, etc.), apply the Singleton design pattern. 
+The project implements the Singleton pattern in several key areas where a single instance is crucial for proper resource management and configuration consistency:
+
+1. **DatabaseConfigManager** - Ensures only one instance manages database configuration, providing thread-safe access to database connection parameters loaded from the .env file.
+
+2. **ApplicationLogger** - Centralizes logging configuration across the entire application, ensuring consistent log formatting and handling throughout all components.
+
+3. **ApplicationSettings** - Manages application-wide configuration settings, providing a single source of truth for application properties and preferences.
+
+These implementations use the double-checked locking pattern for thread safety and prevent cloning to maintain singleton integrity. The pattern is justified here because:
+- Database configuration should be loaded once and shared across the application
+- Logging configuration needs to be consistent application-wide
+- Application settings should be centrally managed to avoid configuration conflicts 
 
 ---
 
@@ -150,10 +168,10 @@ List all major technologies (e.g., Java 24, MySQL).
 
 ### 5.4 Layer Descriptions
 
-* **Presentation Layer:** Brief description.
-* **Service Layer:** Brief description.
-* **Data Access Layer:** Brief description.
-* **Database:** Brief description.
+* **Presentation Layer:** Responsible for handling user interactions and displaying information. It includes web pages, UI components, and API endpoints. The files associated with this layer are the ones prefix Controller, such as `HomeScreen`, `UserScreen`, `ProblemScreen`, and `ContestScreen`.
+* **Service Layer:** Contains the business logic of the application. It processes user requests, interacts with the data access layer, and enforces business rules. The files associated with this layer are the ones prefix Service, such as `UserService`, `ProblemService`, and `ContestService`.
+* **Data Access Layer:** Manages database interactions. It provides an abstraction over the database and handles CRUD operations. The files associated with this layer are the ones prefix Repository, such as `UserRepository`, `ProblemRepository`, and `ContestRepository`.
+* **Database:** The underlying data storage system here is MySQL where all application data is persisted.
 
 ---
 
@@ -215,12 +233,21 @@ User can see submissions of any one using the system
 ## 11. Installation & Deployment
 
 Detailed, step-by-step instructions for:
+The repository is hosted on GitHub at [oj-x](https://github.com/quynhdinh/oj-x)
 
-* Cloning the repository
-* Setting up dependencies and environment
-* Database setup (with scripts if needed)
-* Running the application (CLI/GUI/Web)
-* (Optional) Docker setup instructions
+But you don't even have to clone the repository, you can download the jar file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0-SNAPSHOT.jar) and run it directly. with `java -jar ojx-1.0-SNAPSHOT.jar`
+
+Development environment setup instructions:
+
+1. Cloning the repository
+2. Setting the environment variables located in the file `ojx/src/main/resources/application.properties/.env`. We need 3 variables
+   * DB_URL: The URL to connect to the MySQL database, e.g., `jdbc:mysql://localhost:3306/ojx`
+
+   * USERNAME: The username to connect to the database, e.g., `root`
+
+   * PASSWORD: The password to connect to the database, e.g., `password`
+* Move to project directory `ojx` `cd ojx`
+* Run script to run the application `./run.sh`
 
 ---
 
@@ -238,9 +265,12 @@ java -jar ojx-1.0-SNAPSHOT.jar
 
 Explain your key design choices, such as:
 
-* Use of interfaces, abstract classes, inheritance (Liskov Substitution Principle), composition.
-* Application of Open-Closed Principle.
-* Design patterns used (if any).
+1. Use of interfaces, abstract classes, inheritance (Liskov Substitution Principle), composition.
+2. Application of Open-Closed Principle.
+3. Design patterns: 
+   * Singleton
+   * Builder: The project using the Builder pattern to create complex objects like `User`, `Problem`, and `Contest` to ensure immutability and ease of construction.
+   * Factory
 
 ---
 
