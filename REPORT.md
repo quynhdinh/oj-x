@@ -158,9 +158,9 @@ Provide an overview of your system's layered architecture. Identify each layer a
 
 ### 5.2 Architecture Diagram
 
-*(Insert a diagram here)*
+![Use case diagram](img/system_design.png)
 
-https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.oreilly.com%2Flibrary%2Fview%2Fsoftware-architecture-patterns%2F9781491971437%2Fch01.html&psig=AOvVaw1MvFBR-hwiX6nYyg9wbaq7&ust=1752555946799000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqGAoTCMjf0OfJu44DFQAAAAAdAAAAABCEAQ<img width="1127" height="843" alt="image" src="https://github.com/user-attachments/assets/e2aa8498-ae27-4ab7-bba0-03e5223de976" />
+<img width="1127" height="843" alt="image" src="https://github.com/user-attachments/assets/e2aa8498-ae27-4ab7-bba0-03e5223de976" />
 
 ### 5.3 Technologies Used
 
@@ -177,8 +177,7 @@ List all major technologies (e.g., Java 24, MySQL).
 
 ## 6. Use Case Diagram(s)
 
-Insert your use case diagram(s) here (as an image or diagram link).
-
+![Use case diagram](img/use_case.png)
 ---
 
 ## 7. Use Case Descriptions
@@ -195,7 +194,86 @@ Provide detailed descriptions for each use case:
 
 ## 8. Class Diagram
 
-Insert your UML class diagram image. Include key classes, their attributes, methods, relationships (associations, inheritance, interfaces, composition).
+The OJ-X system follows a layered architecture with clear separation of concerns. Below is the comprehensive class diagram showing key classes, their attributes, methods, and relationships:
+
+![Class diagram](img/class_diagram.png)
+
+### 8.1 Architecture Layers
+
+#### Model Layer
+The core business entities representing the domain objects:
+
+- **User**: Represents system users (admin, problem setter, regular user) with Builder pattern implementation
+- **Problem**: Programming problems with associated metadata (difficulty, tags, statement)
+- **Contest**: Programming contests containing multiple problems with timing and scoring
+- **Submission**: User code submissions with judge status and metadata
+- **TestCase**: Input/output test cases for problems, with Builder pattern implementation
+- **JudgeStatus**: Enumeration for submission statuses (AC, WA, TLE, MLE, RE, CE)
+
+#### Service Layer (Business Logic)
+Interface-based services implementing business rules:
+
+- **UserService/UserServiceImpl**: User management, authentication, profile operations
+- **ProblemService/ProblemServiceImpl**: Problem CRUD operations, filtering, visibility management
+- **ContestService/ContestServiceImpl**: Contest management and participation
+- **SubmissionService/SubmissionServiceImpl**: Code submission handling and result management
+- **TestCaseService/TestCaseServiceImpl**: Test case management for problems
+
+#### Repository Layer (Data Access)
+Data access objects handling database operations:
+
+- **UserRepository**: User data persistence and queries
+- **ProblemRepository**: Problem data management with complex filtering
+- **ContestRepository**: Contest data operations
+- **SubmissionRepository**: Submission data with pagination support
+- **TestCaseRepository**: Test case batch operations
+
+#### Configuration Layer (Singleton Pattern)
+Centralized configuration management using Singleton pattern:
+
+- **DatabaseConfigManager**: Singleton for database configuration management
+- **ApplicationLogger**: Singleton for centralized logging across the application
+- **ApplicationSettings**: Singleton for application-wide settings
+- **ConnectionManager**: Database connection management using DatabaseConfigManager
+
+#### GUI Layer
+User interface components following MVC pattern:
+
+- **HomeScreen**: Main user dashboard
+- **ProblemsetScreen**: Problem browsing and filtering interface
+- **ContestScreen**: Contest listing and participation
+- **SubmissionScreen**: Submission history and status tracking
+- **CreateProblemScreen**: Problem creation interface with nested TestCaseInputPanel
+- **ViewProblemScreen**: Problem details and submission interface
+- **Admin Screens**: Administrative interfaces for user, problem, and contest management
+
+### 8.2 Key Design Patterns
+
+- **Singleton Pattern**: DatabaseConfigManager, ApplicationLogger, ApplicationSettings
+- **Builder Pattern**: User.Builder, TestCase.Builder for complex object construction
+- **Repository Pattern**: Data access abstraction layer
+- **MVC Pattern**: Separation of GUI, business logic, and data layers
+- **Interface Segregation**: Service interfaces separate from implementations
+
+### 8.3 Key Relationships
+
+- **User** creates multiple **Submissions** (1:N)
+- **Problem** has multiple **TestCases** (1:N) 
+- **Problem** receives multiple **Submissions** (1:N)
+- **Contest** includes multiple **Problems** (M:N through problemIds string)
+- **Service** implementations depend on **Repository** classes
+- **Repository** classes use **ConnectionManager** for database access
+- **ConnectionManager** uses **DatabaseConfigManager** singleton
+- **GUI** components depend on **Service** interfaces
+
+### 8.3 Stream API Usage
+
+The system extensively uses Java Stream API for collection processing:
+- Filtering problems by difficulty, tags, and names
+- Processing test case batches
+- Mapping DTOs to display objects
+- Aggregating submission statistics
+- Sorting and pagination operations
 
 ---
 
@@ -207,22 +285,21 @@ Provide sequence diagrams for important use cases.
 
 ## 10. Screenshots
 
-User can log in to the system
+User can log in / Sign up to the system
+Login Screen             |  Sign up Screen
+:-------------------------:|:-------------------------:
+![](img/login.png)  |  ![](img/signup.png)
 
-![Login](img/login.png)
-
-User can sign up
-
-![Signup](img/signup.png)
-
-The home screen
-
-![Home](img/home.png)
+Easy to use UI for users
+User/Problem Setter Home Screen             | Admin Home Screen
+:-------------------------:|:-------------------------:
+![](img/home.png)  |  ![](img/admin_home.png)
 
 User can participate in contests
 ![Contest](img/contest.png)
 
 User can browse problems to solve
+
 ![Problem Set](img/problem_set.png)
 
 User can see submissions of any one using the system
@@ -231,30 +308,27 @@ User can see submissions of any one using the system
 ---
 
 ## 11. Installation & Deployment
-
-Detailed, step-by-step instructions for:
 The repository is hosted on GitHub at [oj-x](https://github.com/quynhdinh/oj-x)
-
-But you don't even have to clone the repository, you can download the jar file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0-SNAPSHOT.jar) and run it directly. with `java -jar ojx-1.0-SNAPSHOT.jar`
 
 Development environment setup instructions:
 
 1. Cloning the repository
 2. Setting the environment variables located in the file `ojx/src/main/resources/application.properties/.env`. We need 3 variables
-   * DB_URL: The URL to connect to the MySQL database, e.g., `jdbc:mysql://localhost:3306/ojx`
+   * `DB_URL`: The URL to connect to the MySQL database, e.g., `jdbc:mysql://localhost:3306/ojx`
 
-   * USERNAME: The username to connect to the database, e.g., `root`
+   * `USERNAME`: The username to connect to the database
 
-   * PASSWORD: The password to connect to the database, e.g., `password`
+   * `PASSWORD`: The password to connect to the database
+  
 * Move to project directory `ojx` `cd ojx`
 * Run script to run the application `./run.sh`
 
 ---
 
 ## 12. How to Use
-The application database is hosted on MySQL and deployed using a running instance. All you have to do is to have your machine running Java 24.
+The application database is hosted on MySQL and deployed using a running instance. All you have to do is to have your machine running Java 24 and Maven installed.
 
-Download the jar file from `./ojx` and running the following command:
+Download `the jar` file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0-SNAPSHOT.jar) and running the following command:
 ```bash
 java -jar ojx-1.0-SNAPSHOT.jar
 ```
@@ -266,11 +340,14 @@ java -jar ojx-1.0-SNAPSHOT.jar
 Explain your key design choices, such as:
 
 1. Use of interfaces, abstract classes, inheritance (Liskov Substitution Principle), composition.
+   * The system uses interfaces for services (e.g., `UserService`, `ProblemService`) to define contracts for business logic operations.
 2. Application of Open-Closed Principle.
+   * The system uses interfaces for services (e.g., `UserService`, `ProblemService`) to allow easy extension without modifying existing code.
+   * New features can be added by implementing new service classes or extending existing ones without changing the core logic.
+   * The system is designed to be modular, allowing new features to be added as separate modules or services without affecting existing functionality.
 3. Design patterns: 
-   * Singleton
+   * Singleton: `ApplicationLogger`, `DatabaseConfigManager`, `ApplicationSettings` to ensure single instances for logging, database configuration, and application settings.
    * Builder: The project using the Builder pattern to create complex objects like `User`, `Problem`, and `Contest` to ensure immutability and ease of construction.
-   * Factory
 
 ---
 
