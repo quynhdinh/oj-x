@@ -19,11 +19,11 @@ import java.util.Optional;
 
 public class ContestScreen extends JFrame {
     private JTable contestTable;
-    private DefaultTableModel tableModel;
+    protected DefaultTableModel tableModel;
     private JButton backButton;
-    private JLabel totalContestsLabel;
+    protected JLabel totalContestsLabel;
 
-    private ContestService contestService;
+    protected ContestService contestService;
     private List<Contest> contests; // Store loaded contests
 
     // Table column names
@@ -126,7 +126,7 @@ public class ContestScreen extends JFrame {
         contestTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                if (evt.getClickCount() == 1 && contestTable.getSelectedRow() != -1) {
+                if (evt.getClickCount() == 2 && contestTable.getSelectedRow() != -1) {
                     handleViewContest();
                 }
             }
@@ -155,7 +155,7 @@ public class ContestScreen extends JFrame {
         setMinimumSize(new Dimension(800, 500));
     }
 
-    private void loadContests() {
+    protected void loadContests() {
         try {
             // Clear existing data
             tableModel.setRowCount(0);

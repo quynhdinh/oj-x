@@ -112,7 +112,7 @@ public class UpdateCreateContestScreen extends JFrame {
     }
 
     private boolean isUpdateForm() {
-        return contestIdField.getText().equals("0");
+        return this.contest.getContestId() != 0;
     }
 
     private void setupLayout() {
