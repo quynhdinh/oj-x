@@ -40,10 +40,6 @@ This online judge system empowers users to enhance their programming skills thro
 
 ## 2. User Stories
 
-Describe the system from the user's perspective using user stories:
-
-* As a \[user role], I want to \[feature] so that \[benefit].
-
 Admin User Stories
 
 * As an admin, I want to manage user accounts so that I can control access and ensure a safe environment.
