@@ -325,9 +325,9 @@ Development environment setup instructions:
 ## 12. How to Use
 The application database is hosted on MySQL and deployed using a running instance. All you have to do is to have your machine running Java 24 and Maven installed.
 
-Download `the jar` file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0-SNAPSHOT.jar) and running the following command:
+Download `the jar` file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0.jar) and running the following command:
 ```bash
-java -jar ojx-1.0-SNAPSHOT.jar
+java -jar ojx-1.0.jar
 ```
 
 ---

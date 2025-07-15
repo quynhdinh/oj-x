@@ -19,10 +19,10 @@ if [ $? -eq 0 ]; then
     echo "Generated JAR files:"
     ls -la target/*.jar
     echo ""
-    echo "Main executable JAR: target/ojx-1.0-SNAPSHOT.jar"
+    echo "Main executable JAR: target/ojx-1.0.jar"
     echo ""
     echo "To run the application:"
-    echo "java -jar target/ojx-1.0-SNAPSHOT.jar"
+    echo "java -jar target/ojx-1.0.jar"
     echo ""
     echo "Distribution package ready!"
 else
