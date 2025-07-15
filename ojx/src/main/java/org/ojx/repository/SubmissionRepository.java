@@ -10,6 +10,7 @@ import org.ojx.connection.ConnectionManager;
 import org.ojx.dto.SubmissionDetailDTO;
 import org.ojx.dto.SubmissionResDTO;
 import org.ojx.model.Submission;
+import org.ojx.utils.Time;
 
 public class SubmissionRepository {
 
@@ -19,12 +20,14 @@ public class SubmissionRepository {
     public boolean createSubmission(int userId, int problemId, String language, String sourceCode) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME
-                    + " (user_id, problem_id, language, source_code) VALUES (?, ?, ?, ?)";
+                    + " (user_id, problem_id, language, source_code, judge_status, created_at) VALUES (?, ?, ?, ?, ?, ?)";
             try (var preparedStatement = conn.prepareStatement(sql)) {
                 preparedStatement.setInt(1, userId);
                 preparedStatement.setInt(2, problemId);
                 preparedStatement.setString(3, language);
                 preparedStatement.setString(4, sourceCode);
+                preparedStatement.setString(5, "Queued"); // TODO: Remove this
+                preparedStatement.setLong(6, Time.now());
                 int rowsAffected = preparedStatement.executeUpdate();
                 return rowsAffected > 0;
             }

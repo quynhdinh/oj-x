@@ -113,6 +113,9 @@ public class ViewProblemScreen extends JFrame {
         sourceCodeArea.setLineWrap(false);
         sourceCodeArea.setBorder(BorderFactory.createLoweredBevelBorder());
         sourceCodeArea.setTabSize(4);
+        sourceCodeArea.setText("public static void main(){\n" + //
+                        "\t// Your code goes here\n" + //
+                        "}");
 
         // Language selection combo box
         String[] languages = {"Java", "C++", "Python", "JavaScript", "C"};
