@@ -16,17 +16,15 @@
 
 ---
 
-# Important Project Requirements
+# Important Project Requirements Satisfied
 
 **Stream API:**
 
-You must make use of the Java Stream API wherever it is applicable, especially for collection processing, filtering, mapping, aggregation, and other data operations. Clearly highlight these usages in your code and documentation.
+Stream API is used extensively throughout the [project](https://github.com/quynhdinh/oj-x/commit/883701d862ea6d2ce78b79d9079d3dd7ee4bcaab) to process collections of data, such as filtering problems by difficulty, tags, and names, processing test case batches, mapping DTOs to display objects, aggregating submission statistics, and sorting and pagination operations.
 
 **Unit Testing:**
 
-Implement unit tests for your business logic using JUnit or a similar testing framework. Include instructions for running your test suite and ensure your tests cover major functionalities and edge cases.
-
-The project includes unit tests for key business logic components, particularly in the `UserService` class. The tests cover scenarios such as:
+The project includes unit tests for key business logic components.
 
 Run the following command to execute the tests:
 ```bash
@@ -90,6 +88,7 @@ Problem Setter User Stories
 
 ## 3. Functional Requirements
 User Management
+
     User Registration: Users must be able to create an account by providing necessary information (e.g., username, email, password).
   
     User Login/Logout: Users must be able to log in and log out securely.
@@ -98,7 +97,7 @@ User Management
 
 Problem Management
 
-    Problem Creation: Problem setters must be able to create, edit, and delete programming problems.
+    Problem Creation: Problem setters must be able to create programming problems which are later to be reviewed.
     
     Problem Categorization: Problems must be categorized by difficulty, topic, and tags for easy navigation.
     
@@ -123,11 +122,6 @@ Contests
 ---
 
 ## 4. Non-Functional Requirements
-
-Security
-
-    Data Encryption: User data must be encrypted both in transit and at rest to ensure privacy and security.
-
 Usability
 
     User Interface: The system must have an intuitive and user-friendly interface accessible to users with varying technical skills.
@@ -141,13 +135,13 @@ Availability
 
 ### 5.1 Overview
 
-Provide an overview of your system's layered architecture. Identify each layer and briefly describe its purpose.
+I follow a layered architecture pattern, which separates concerns and promotes maintainability.
+
+<img width="1127" height="843" alt="image" src="https://github.com/user-attachments/assets/e2aa8498-ae27-4ab7-bba0-03e5223de976" />
 
 ### 5.2 Architecture Diagram
 
 ![Use case diagram](img/system_design.png)
-
-<img width="1127" height="843" alt="image" src="https://github.com/user-attachments/assets/e2aa8498-ae27-4ab7-bba0-03e5223de976" />
 
 ### 5.3 Technologies Used
 
@@ -169,13 +163,39 @@ List all major technologies (e.g., Java 24, MySQL, Maven).
 
 ## 7. Use Case Descriptions
 
-Provide detailed descriptions for each use case:
+Provide detailed descriptions for some important use cases:
 
-* **Use Case Name:**
-* **Primary Actor(s):**
-* **Preconditions:**
-* **Postconditions:**
+7. 1
+* **Use Case Name:** User Submit Problem
+* **Primary Actor(s):** User
+* **Preconditions:** User is logged in and has navigated to the problem submission page.
+* **Postconditions:** User's submission is recorded, and feedback is provided.
 * **Main Success Scenario:**
+  1. User selects a problem to solve.
+  2. User writes code in the provided editor.
+  3. User clicks the "Submit" button.
+  4. System validates the submission and runs tests.
+  5. System provides feedback on the submission.
+7. 2
+* **Use Case Name:** Admin Manage User Accounts
+* **Primary Actor(s):** Admin
+* **Preconditions:** Admin is logged in and has access to the user management interface.
+* **Postconditions:** User accounts are updated, and changes are reflected in the system.
+* **Main Success Scenario:**
+  1. Admin navigates to the user management section.
+  2. Admin views a list of registered users.
+  3. Admin selects a user to manage.
+  4. Admin can edit user details, deactivate accounts.
+
+7.3
+* **Use Case Name:** User Participate in Contest
+* **Primary Actor(s):** User
+* **Preconditions:** User is logged in and contests are available.
+* **Postconditions:** User's participation is recorded, and contest results are updated.
+* **Main Success Scenario:**
+  1. User navigates to the contest page.
+  2. User selects a contest to participate in.
+  3. User can solve problems only if the contest is ongoing.
 
 ---
 
@@ -338,6 +358,7 @@ Explain your key design choices, such as:
 
 1. Use of interfaces, abstract classes, inheritance (Liskov Substitution Principle), composition.
    * The system uses interfaces for services (e.g., `UserService`, `ProblemService`) to define contracts for business logic operations.
+   * The UI of some Admin screens `extends` screens from regular users to reuse common functionality and ensure consistent behavior. 
 2. Application of Open-Closed Principle.
    * The system uses interfaces for services (e.g., `UserService`, `ProblemService`) to allow easy extension without modifying existing code.
    * New features can be added by implementing new service classes or extending existing ones without changing the core logic.
@@ -355,8 +376,9 @@ Explain your key design choices, such as:
 ---
 
 ## 15. References
-
-List all external resources, libraries, frameworks, and sources consulted.
+* Lecture notes
+* Lecture sample code
+* Online resources for Java Stream API, Singleton pattern, and Builder pattern
 
 ---
 ## Grading Rubric (Total: 10 Points)
