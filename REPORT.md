@@ -29,7 +29,6 @@
     - [5.3 Technologies Used](#53-technologies-used)
     - [5.4 Layer Descriptions](#54-layer-descriptions)
   - [6. Use Case Diagram(s)](#6-use-case-diagrams)
-  - [](#)
   - [7. DB Schema](#7-db-schema)
   - [8. Use Case Descriptions](#8-use-case-descriptions)
   - [9. Class Diagram](#9-class-diagram)
