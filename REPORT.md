@@ -15,8 +15,43 @@
 **Date of Submission:** \[07/15/2025]
 
 ---
-
-# Important Project Requirements Satisfied
+## Table of Contents
+- [Course Project Report](#course-project-report)
+  - [Table of Contents](#table-of-contents)
+  - [Important Project Requirements Satisfied](#important-project-requirements-satisfied)
+  - [1. Problem Description](#1-problem-description)
+  - [2. User Stories](#2-user-stories)
+  - [3. Functional Requirements](#3-functional-requirements)
+  - [4. Non-Functional Requirements](#4-non-functional-requirements)
+  - [5. Architecture of Project](#5-architecture-of-project)
+    - [5.1 Overview](#51-overview)
+    - [5.2 Architecture Diagram](#52-architecture-diagram)
+    - [5.3 Technologies Used](#53-technologies-used)
+    - [5.4 Layer Descriptions](#54-layer-descriptions)
+  - [6. Use Case Diagram(s)](#6-use-case-diagrams)
+  - [](#)
+  - [7. DB Schema](#7-db-schema)
+  - [8. Use Case Descriptions](#8-use-case-descriptions)
+  - [9. Class Diagram](#9-class-diagram)
+    - [9.1 Architecture Layers](#91-architecture-layers)
+      - [Model Layer](#model-layer)
+      - [Service Layer (Business Logic)](#service-layer-business-logic)
+      - [Repository Layer (Data Access)](#repository-layer-data-access)
+      - [Configuration Layer (Singleton Pattern)](#configuration-layer-singleton-pattern)
+      - [GUI Layer](#gui-layer)
+    - [9.2 Key Design Patterns](#92-key-design-patterns)
+    - [9.3 Key Relationships](#93-key-relationships)
+    - [9.4 Stream API Usage](#94-stream-api-usage)
+  - [10. Sequence Diagrams](#10-sequence-diagrams)
+  - [11. Screenshots](#11-screenshots)
+  - [](#-1)
+  - [12. Installation \& Deployment](#12-installation--deployment)
+  - [13. How to Use](#13-how-to-use)
+  - [14. Design Justification \& Principles](#14-design-justification--principles)
+  - [15. Team Members](#15-team-members)
+  - [16. References](#16-references)
+  - [Grading Rubric (Total: 10 Points)](#grading-rubric-total-10-points)
+## Important Project Requirements Satisfied
 
 **Stream API:**
 
@@ -160,12 +195,13 @@ List all major technologies (e.g., Java 24, MySQL, Maven).
 
 ![Use case diagram](img/use_case.png)
 ---
-
-## 7. Use Case Descriptions
+## 7. DB Schema
+![DB Schema](img/db_schema.png)
+## 8. Use Case Descriptions
 
 Provide detailed descriptions for some important use cases:
 
-7. 1
+8. 1
 * **Use Case Name:** User Submit Problem
 * **Primary Actor(s):** User
 * **Preconditions:** User is logged in and has navigated to the problem submission page.
@@ -176,7 +212,7 @@ Provide detailed descriptions for some important use cases:
   3. User clicks the "Submit" button.
   4. System validates the submission and runs tests.
   5. System provides feedback on the submission.
-7. 2
+8. 2
 * **Use Case Name:** Admin Manage User Accounts
 * **Primary Actor(s):** Admin
 * **Preconditions:** Admin is logged in and has access to the user management interface.
@@ -187,7 +223,7 @@ Provide detailed descriptions for some important use cases:
   3. Admin selects a user to manage.
   4. Admin can edit user details, deactivate accounts.
 
-7.3
+8. 3
 * **Use Case Name:** User Participate in Contest
 * **Primary Actor(s):** User
 * **Preconditions:** User is logged in and contests are available.
@@ -199,13 +235,13 @@ Provide detailed descriptions for some important use cases:
 
 ---
 
-## 8. Class Diagram
+## 9. Class Diagram
 
 The OJ-X system follows a layered architecture with clear separation of concerns. Below is the comprehensive class diagram showing key classes, their attributes, methods, and relationships:
 
 ![Class diagram](img/class_diagram.png)
 
-### 8.1 Architecture Layers
+### 9.1 Architecture Layers
 
 #### Model Layer
 The core business entities representing the domain objects:
@@ -254,7 +290,7 @@ User interface components following MVC pattern:
 - **ViewProblemScreen**: Problem details and submission interface
 - **Admin Screens**: Administrative interfaces for user, problem, and contest management
 
-### 8.2 Key Design Patterns
+### 9.2 Key Design Patterns
 
 - **Singleton Pattern**: DatabaseConfigManager, ApplicationLogger, ApplicationSettings
 - **Builder Pattern**: User.Builder, TestCase.Builder for complex object construction
@@ -262,7 +298,7 @@ User interface components following MVC pattern:
 - **MVC Pattern**: Separation of GUI, business logic, and data layers
 - **Interface Segregation**: Service interfaces separate from implementations
 
-### 8.3 Key Relationships
+### 9.3 Key Relationships
 
 - **User** creates multiple **Submissions** (1:N)
 - **Problem** has multiple **TestCases** (1:N) 
@@ -273,7 +309,7 @@ User interface components following MVC pattern:
 - **ConnectionManager** uses **DatabaseConfigManager** singleton
 - **GUI** components depend on **Service** interfaces
 
-### 8.3 Stream API Usage
+### 9.4 Stream API Usage
 
 The system extensively uses Java Stream API for collection processing:
 - Filtering problems by difficulty, tags, and names
@@ -284,7 +320,7 @@ The system extensively uses Java Stream API for collection processing:
 
 ---
 
-## 9. Sequence Diagrams
+## 10. Sequence Diagrams
 Here are the sequence diagrams for key use cases in the OJ-X system:
 
 Save Problem
@@ -297,7 +333,7 @@ Submit Problem
 
 ---
 
-## 10. Screenshots
+## 11. Screenshots
 
 User can log in / Sign up to the system
 Login Screen             |  Sign up Screen
@@ -324,7 +360,7 @@ Admin panel for managing users, problems, and contests
 ![Admin Panel](img/admin_panel.png)
 ---
 
-## 11. Installation & Deployment
+## 12. Installation & Deployment
 The repository is hosted on GitHub at [oj-x](https://github.com/quynhdinh/oj-x)
 
 Development environment setup instructions:
@@ -342,7 +378,7 @@ Development environment setup instructions:
 
 ---
 
-## 12. How to Use
+## 13. How to Use
 The application database is hosted on MySQL and deployed using a running instance. All you have to do is to have your machine running Java 24 and Maven installed.
 
 Download `the jar` file from [here](https://github.com/quynhdinh/oj-x/releases/download/v1.0/ojx-1.0.jar) and running the following command:
@@ -352,7 +388,7 @@ java -jar ojx-1.0.jar
 
 ---
 
-## 13. Design Justification & Principles
+## 14. Design Justification & Principles
 
 Explain your key design choices, such as:
 
@@ -369,13 +405,13 @@ Explain your key design choices, such as:
 
 ---
 
-## 14. Team Members
+## 15. Team Members
 
 \[There is only me in this project, so I will not include this section]
 
 ---
 
-## 15. References
+## 16. References
 * Lecture notes
 * Lecture sample code
 * Online resources for Java Stream API, Singleton pattern, and Builder pattern
