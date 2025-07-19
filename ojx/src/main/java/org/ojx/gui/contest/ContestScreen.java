@@ -22,6 +22,7 @@ public class ContestScreen extends JFrame {
     protected DefaultTableModel tableModel;
     private JButton backButton;
     protected JLabel totalContestsLabel;
+    protected JLabel titleLabel;
 
     protected ContestService contestService;
     private List<Contest> contests; // Store loaded contests
@@ -81,7 +82,7 @@ public class ContestScreen extends JFrame {
         
         // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = new JLabel("Contest List");
+        titleLabel = new JLabel("Contest List");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titlePanel.add(titleLabel);
         titlePanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));

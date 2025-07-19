@@ -17,6 +17,7 @@ public class ContestManagementScreen extends ContestScreen {
     public ContestManagementScreen() {
         super();
         setTitle("OJX - Contest Management"); // Override title
+        this.titleLabel.setText("Contest Management"); // Set custom title label
         initializeManagementComponents();
         addManagementButtons();
     }
