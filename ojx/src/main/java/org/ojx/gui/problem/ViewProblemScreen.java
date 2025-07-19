@@ -2,12 +2,15 @@ package org.ojx.gui.problem;
 
 import javax.swing.*;
 import org.ojx.model.Problem;
+import org.ojx.model.Submission;
 import org.ojx.model.TestCase;
 import org.ojx.model.User;
 import org.ojx.repository.ProblemRepository;
+import org.ojx.service.JudgeService;
 import org.ojx.service.ProblemService;
 import org.ojx.service.SubmissionService;
 import org.ojx.service.TestCaseService;
+import org.ojx.service.impl.JudgeServiceImpl;
 import org.ojx.service.impl.ProblemServiceImpl;
 import org.ojx.service.impl.SubmissionServiceImpl;
 import org.ojx.service.impl.TestCaseServiceImpl;
@@ -36,6 +39,7 @@ public class ViewProblemScreen extends JFrame {
 
     private ProblemService problemService;
     private SubmissionService submissionService;
+    private JudgeService judgeService;
     private TestCaseService testCaseService;
     private int problemId;
     private int userId;
@@ -50,6 +54,7 @@ public class ViewProblemScreen extends JFrame {
         problemService = new ProblemServiceImpl(new ProblemRepository(), new TestCaseRepository());
         submissionService = new SubmissionServiceImpl(new SubmissionRepository());
         testCaseService = new TestCaseServiceImpl(new TestCaseRepository());
+        judgeService = new JudgeServiceImpl(); // Assuming JudgeServiceImpl is implemented correctly
         loadProblemData();
     }
     private void setFieldsEditable(){
@@ -394,11 +399,17 @@ public class ViewProblemScreen extends JFrame {
         
         try {
             // Submit the solution
-            boolean success = submissionService.submitSolution(userId, problemId, selectedLanguage, sourceCode);
+            Submission submission = Submission.builder()
+                .userId(userId)
+                .problemId(problemId)
+                .language(selectedLanguage)
+                .sourceCode(sourceCode)
+                .build();
+            boolean success = submissionService.submitSolution(submission);
             
             if (success) {
                 showSuccessMessage("Solution submitted successfully!");
-                // Clear the source code area after successful submission
+                judgeService.submitSolution(submission);
                 sourceCodeArea.setText("");
             } else {
                 showErrorMessage("Failed to submit solution. Please try again.");

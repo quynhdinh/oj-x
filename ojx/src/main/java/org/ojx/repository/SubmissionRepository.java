@@ -17,15 +17,15 @@ public class SubmissionRepository {
     private static final String TABLE_NAME = "submission";
     private static final Logger log = Logger.getLogger(SubmissionRepository.class.getName());
 
-    public boolean createSubmission(int userId, int problemId, String language, String sourceCode) {
+    public boolean createSubmission(Submission submission) {
         try (Connection conn = ConnectionManager.getConnection()) {
             String sql = "INSERT INTO " + TABLE_NAME
                     + " (user_id, problem_id, language, source_code, judge_status, created_at) VALUES (?, ?, ?, ?, ?, ?)";
             try (var preparedStatement = conn.prepareStatement(sql)) {
-                preparedStatement.setInt(1, userId);
-                preparedStatement.setInt(2, problemId);
-                preparedStatement.setString(3, language);
-                preparedStatement.setString(4, sourceCode);
+                preparedStatement.setInt(1, submission.getUserId());
+                preparedStatement.setInt(2, submission.getProblemId());
+                preparedStatement.setString(3, submission.getLanguage());
+                preparedStatement.setString(4, submission.getSourceCode());
                 preparedStatement.setString(5, "Queued"); // TODO: Remove this
                 preparedStatement.setLong(6, Time.now());
                 int rowsAffected = preparedStatement.executeUpdate();
@@ -97,7 +97,15 @@ public class SubmissionRepository {
                         String sourceCode = resultSet.getString("source_code");
                         String judgeStatus = resultSet.getString("judge_status");
                         long createdAt = resultSet.getLong("created_at");
-                        return Optional.of(new Submission(id, language, userId, sourceCode, judgeStatus, createdAt));
+                        Submission submission = Submission.builder()
+                                .submissionId(id)
+                                .userId(userId)
+                                .language(language)
+                                .sourceCode(sourceCode)
+                                .judgeStatus(judgeStatus)
+                                .createdAt(createdAt)
+                                .build();
+                        return Optional.of(submission);
                     }
                 }
             }

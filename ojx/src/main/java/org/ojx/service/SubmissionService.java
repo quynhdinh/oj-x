@@ -8,7 +8,7 @@ import org.ojx.dto.SubmissionResDTO;
 import org.ojx.model.Submission;
 
 public interface SubmissionService {
-    boolean submitSolution(int userId, int problemId, String language, String sourceCode);
+    boolean submitSolution(Submission submission);
     List<SubmissionResDTO> getSubmissionsByUserId(int userId);
     List<SubmissionResDTO> getSubmissionsByProblemId(int problemId);
     int count();

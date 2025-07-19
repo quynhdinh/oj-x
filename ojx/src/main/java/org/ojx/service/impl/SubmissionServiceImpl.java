@@ -19,8 +19,8 @@ public class SubmissionServiceImpl implements SubmissionService {
 
 
     @Override
-    public boolean submitSolution(int userId, int problemId, String language, String sourceCode) {
-        return submissionRepository.createSubmission(userId, problemId, language, sourceCode);
+    public boolean submitSolution(Submission submission) {
+        return submissionRepository.createSubmission(submission);
     }
 
     @Override
